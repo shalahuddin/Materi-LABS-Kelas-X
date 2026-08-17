@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pengenalan Berpikir Komputasional - Revisi Ilmu Komputer KS3 - BBC Bitesize</title>
+<style>
+  :root {
+    --bbc-black: #0c0c0c;
+    --bbc-darkblue: #001124;
+    --bbc-blue: #003366;
+    --bbc-pink: #f0005a;
+    --bbc-pink-hover: #c8004b;
+    --bbc-light-pink: #ffebf2;
+    --bbc-grey: #f6f6f6;
+    --bbc-darkgrey: #404040;
+    --bbc-border: #dbdbdb;
+    --text-color: #2e2e2e;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-color);
+    background-color: var(--bbc-grey);
+    line-height: 1.6;
+    padding-bottom: 60px;
+  }
+
+  /* BBC Header */
+  .bbc-header {
+    background-color: var(--white);
+    border-bottom: 4px solid var(--bbc-black);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bbc-logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: -1px;
+    display: flex;
+    gap: 2px;
+  }
+  .bbc-logo span {
+    background-color: var(--bbc-black);
+    color: var(--white);
+    padding: 2px 8px;
+    font-family: serif;
+    font-weight: bold;
+  }
+  .bitesize-logo {
+    color: var(--bbc-pink);
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+  /* Navigation path (Breadcrumb) */
+  .breadcrumb {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--bbc-border);
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    color: var(--bbc-darkgrey);
+  }
+  .breadcrumb a {
+    color: var(--bbc-blue);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  /* Banner */
+  .subject-banner {
+    background-color: var(--bbc-darkblue);
+    color: var(--white);
+    padding: 24px 16px;
+  }
+  .subject-banner h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .subject-banner p {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    max-width: 1000px;
+    margin: 4px auto 0;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 1024px;
+    margin: 20px auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Sidebar Navigation */
+  .sidebar {
+    background-color: var(--white);
+    border: 1px solid var(--bbc-border);
+    border-radius: 4px;
+    align-self: start;
+  }
+  .sidebar-header {
+    background-color: var(--bbc-blue);
+    color: var(--white);
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    border-radius: 3px 3px 0 0;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    display: block;
+    cursor: pointer;
+  }
+  .sidebar-menu {
+    list-style: none;
+  }
+  .sidebar-item {
+    border-bottom: 1px solid var(--bbc-border);
+  }
+  .sidebar-item:last-child {
+    border-bottom: none;
+  }
+  .sidebar-link {
+    display: block;
+    padding: 12px 16px;
+    color: var(--bbc-blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .sidebar-link:hover {
+    background-color: var(--bbc-grey);
+    color: var(--bbc-pink);
+  }
+  .sidebar-item.active .sidebar-link {
+    background-color: var(--bbc-light-pink);
+    border-left: 4px solid var(--bbc-pink);
+    color: var(--bbc-pink-hover);
+  }
+
+  /* Article Content */
+  .content-area {
+    background-color: var(--white);
+    border: 1px solid var(--bbc-border);
+    border-radius: 4px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .revision-page {
+    display: none;
+  }
+  .revision-page.active {
+    display: block;
+  }
+  .content-area h2 {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+    color: var(--bbc-blue);
+    border-bottom: 2px solid var(--bbc-pink);
+    padding-bottom: 8px;
+  }
+  .content-area h3 {
+    font-size: 1.25rem;
+    margin: 20px 0 10px;
+    color: var(--bbc-darkblue);
+  }
+  .content-area p {
+    margin-bottom: 16px;
+    font-size: 1rem;
+    color: #333;
+  }
+  .content-area ul, .content-area ol {
+    margin: 0 0 16px 24px;
+  }
+  .content-area li {
+    margin-bottom: 8px;
+  }
+
+  /* Callout box */
+  .callout-box {
+    background-color: #f0f4f8;
+    border-left: 5px solid var(--bbc-blue);
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Cornerstone Grid */
+  .cornerstone-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  @media (max-width: 576px) {
+    .cornerstone-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cornerstone-card {
+    border: 1px solid var(--bbc-border);
+    border-radius: 4px;
+    padding: 16px;
+    background-color: var(--bbc-grey);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+    display: block;
+    color: inherit;
+  }
+  .cornerstone-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border-color: var(--bbc-pink);
+  }
+  .cornerstone-title {
+    font-weight: bold;
+    color: var(--bbc-blue);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+  .cornerstone-desc {
+    font-size: 0.9rem;
+    color: var(--bbc-darkgrey);
+    display: block;
+  }
+  .hidden-detail {
+    display: none;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--bbc-border);
+    font-size: 0.9rem;
+    color: #444;
+  }
+  .hidden-detail.show {
+    display: block;
+  }
+
+  /* Page Footer Nav */
+  .page-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--bbc-border);
+  }
+  .bbc-btn {
+    background-color: var(--bbc-pink);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .bbc-btn:hover {
+    background-color: var(--bbc-pink-hover);
+  }
+  .bbc-btn.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  .bbc-btn.secondary {
+    background-color: var(--white);
+    color: var(--bbc-blue);
+    border: 1px solid var(--bbc-blue);
+  }
+  .bbc-btn.secondary:hover {
+    background-color: #f0f4f8;
+  }
+
+  /* Quiz Styling */
+  .quiz-container {
+    margin-top: 20px;
+  }
+  .question-block {
+    margin-bottom: 24px;
+    border: 1px solid var(--bbc-border);
+    border-radius: 6px;
+    padding: 18px;
+    background-color: var(--white);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .question-text {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    color: var(--bbc-darkblue);
+    line-height: 1.4;
+  }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border: 1px solid var(--bbc-border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .option-label:hover {
+    background-color: #f0f4f8;
+    border-color: var(--bbc-blue);
+  }
+  .option-label input {
+    margin: 3px 12px 0 0;
+    transform: scale(1.25);
+    flex-shrink: 0;
+    accent-color: var(--bbc-blue);
+  }
+  .option-label:has(input:checked) {
+    background-color: #f0f4f8;
+    border-color: var(--bbc-blue);
+    font-weight: bold;
+  }
+  .option-label.correct {
+    background-color: #e2fcdb !important;
+    border-color: #27ae60 !important;
+    color: #1e6c38 !important;
+    font-weight: bold;
+  }
+  .option-label.wrong {
+    background-color: #fce2e2 !important;
+    border-color: #c0392b !important;
+    color: #7d2017 !important;
+  }
+  .option-label.disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+  .quiz-feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: none;
+    line-height: 1.4;
+  }
+  .quiz-feedback.ok {
+    color: #1e6c38;
+    background-color: #e2fcdb;
+    border-left: 4px solid #27ae60;
+    display: block;
+  }
+  .quiz-feedback.no {
+    color: #7d2017;
+    background-color: #fce2e2;
+    border-left: 4px solid #c0392b;
+    display: block;
+  }
+  .score-card {
+    background-color: var(--bbc-light-pink);
+    border: 1px solid var(--bbc-pink);
+    padding: 24px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .score-card h3 {
+    color: var(--bbc-pink-hover);
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  .score-num {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--bbc-black);
+    margin: 10px 0;
+  }
+  .score-card-btn {
+    margin-top: 14px;
+  }
+  .quiz-submit-btn {
+    margin-top: 20px;
+  }
+  .space-top-10 {
+    margin-top: 10px;
+  }
+  .space-top-20 {
+    margin-top: 20px;
+  }
+  .space-top-6 {
+    margin-top: 6px;
+  }
+  .space-top-8 {
+    margin-top: 8px;
+  }
+  .bold-text {
+    font-weight: bold;
+  }
+  .hide-element {
+    display: none;
+  }
+  .show-element {
+    display: block;
+  }
+
+  /* Responsive & Mobile Optimizations */
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 12px auto;
+    }
+
+    /* Breadcrumb Horisontal Scroll */
+    .breadcrumb {
+      white-space: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      display: block;
+      padding: 12px 16px;
+      font-size: 0.8rem;
+    }
+
+    /* Sidebar Navigation as Accordion Menu on Mobile */
+    .sidebar {
+      width: 100%;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .sidebar-header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      font-size: 1rem;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sidebar-header::after {
+      content: '▼';
+      font-size: 0.8rem;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .sidebar.open .sidebar-header::after {
+      transform: rotate(180deg);
+    }
+    .sidebar-menu {
+      display: none;
+      border-top: 1px solid var(--bbc-border);
+    }
+    .sidebar.open .sidebar-menu {
+      display: block;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .subject-banner {
+      padding: 20px 16px;
+    }
+    .subject-banner h1 {
+      font-size: 1.5rem;
+    }
+    .subject-banner p {
+      font-size: 0.85rem;
+    }
+    .content-area {
+      padding: 16px;
+    }
+    .cornerstone-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .question-block {
+      padding: 14px 12px;
+      margin-bottom: 16px;
+    }
+    .page-nav {
+      flex-direction: column-reverse;
+      gap: 12px;
+      align-items: stretch;
+      margin-top: 24px;
+    }
+    .page-nav span {
+      display: none;
+    }
+    .page-nav .bbc-btn {
+      width: 100%;
+      text-align: center;
+      padding: 14px 16px;
+      font-size: 1.05rem;
+    }
+    #quizForm button[type="button"] {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1.05rem;
+    }
+  }
+
+  /* Cornerstone Card indicators */
+  .cornerstone-title::after {
+    content: '＋';
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--bbc-pink);
+    transition: transform 0.2s ease;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .cornerstone-card.active .cornerstone-title::after {
+    content: '－';
+  }
+
+  /* BBC Footer */
+  .bbc-footer {
+    background-color: var(--bbc-black);
+    color: var(--white);
+    padding: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 40px;
+  }
+  .bbc-footer a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  .bbc-footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+  <!-- BBC Header -->
+  <header class="bbc-header">
+    <div class="bbc-logo">
+      <span>B</span><span>B</span><span>C</span>
+    </div>
+    <div class="bitesize-logo">Bitesize</div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="#">Beranda</a> &gt; <a href="#">KS3 (SMP Kelas IX / SMA Kelas X)</a> &gt; <a href="#">Ilmu Komputer</a> &gt; Berpikir Komputasional
+  </nav>
+
+  <!-- Subject Banner -->
+  <section class="subject-banner">
+    <h1>Pengenalan Berpikir Komputasional</h1>
+    <p>Bagian dari Ilmu Komputer · Berpikir Komputasional (Panduan Revisi Interaktif)</p>
+  </section>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar-header" type="button" onclick="toggleMobileMenu()">Navigasi Halaman</button>
+      <ul class="sidebar-menu" id="sidebarMenu">
+        <li class="sidebar-item active" id="menu-1">
+          <button type="button" class="sidebar-link" onclick="loadPage(1)">1. Apa itu berpikir komputasional?</button>
+        </li>
+        <li class="sidebar-item" id="menu-2">
+          <button type="button" class="sidebar-link" onclick="loadPage(2)">2. Berpikir secara komputasional</button>
+        </li>
+        <li class="sidebar-item" id="menu-3">
+          <button type="button" class="sidebar-link" onclick="loadPage(3)">3. Tes Pemahaman (Kuis)</button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+
+      <!-- PAGE 1: WHAT IS COMPUTATIONAL THINKING -->
+      <section class="revision-page active" id="page-1">
+        <h2>Apa itu berpikir komputasional?</h2>
+
+        <p>
+          Komputer dapat digunakan untuk membantu kita memecahkan masalah. Namun, sebelum sebuah masalah dapat diselesaikan,
+          masalah itu sendiri dan cara-cara yang dapat digunakan untuk menyelesaikannya perlu dipahami terlebih dahulu.
+        </p>
+
+        <div class="callout-box">
+          <p><strong>Berpikir komputasional</strong> (computational thinking) memungkinkan kita untuk melakukan hal ini.</p>
+          <p>
+            Berpikir komputasional memungkinkan kita untuk mengambil masalah yang kompleks, memahami apa masalahnya,
+            dan mengembangkan solusi yang mungkin. Kita kemudian dapat menyajikan solusi-solusi ini dengan cara yang dapat
+            dipahami oleh komputer, manusia, atau keduanya.
+          </p>
+        </div>
+
+        <h3>Empat sudut batu fondasi berpikir komputasional</h3>
+        <p>Ada empat teknik kunci (batu fondasi) dalam berpikir komputasional. Klik pada kartu di bawah ini untuk melihat contoh detail:</p>
+
+        <div class="cornerstone-grid">
+
+          <button class="cornerstone-card" type="button" onclick="toggleCornerstone(this)">
+            <span class="cornerstone-title">🧱 Dekomposisi (Decomposition)</span>
+            <span class="cornerstone-desc">Memecah masalah atau sistem yang kompleks menjadi bagian-bagian kecil yang lebih mudah dikelola.</span>
+            <span class="hidden-detail">
+              <strong>Contoh Nyata:</strong> Saat merapikan kamar yang sangat berantakan, dekomposisi membantu Anda membaginya menjadi sub-tugas kecil: (1) kumpulkan baju kotor, (2) susun buku di rak, (3) sapu lantai. Anda tidak mengerjakan semuanya sekaligus, melainkan satu demi satu.
+            </span>
+          </button>
+
+          <button class="cornerstone-card" type="button" onclick="toggleCornerstone(this)">
+            <span class="cornerstone-title">🔁 Pengenalan Pola (Pattern Recognition)</span>
+            <span class="cornerstone-desc">Mencari kesamaan atau kemiripan di dalam dan di antara masalah-masalah yang ada.</span>
+            <span class="hidden-detail">
+              <strong>Contoh Nyata:</strong> Jika Anda tahu cara menggambarkan seekor kucing (punya mata, cakar, ekor, bulu), Anda akan mengenali pola yang sama pada kucing jenis lain. Yang membedakan hanya detail spesifiknya (seperti warna mata atau panjang bulu).
+            </span>
+          </button>
+
+          <button class="cornerstone-card" type="button" onclick="toggleCornerstone(this)">
+            <span class="cornerstone-title">🎯 Abstraksi (Abstraction)</span>
+            <span class="cornerstone-desc">Hanya berfokus pada informasi penting saja, mengabaikan detail-detail yang tidak relevan.</span>
+            <span class="hidden-detail">
+              <strong>Contoh Nyata:</strong> Peta jalur MRT/KRL adalah contoh abstraksi. Peta tersebut hanya menampilkan stasiun dan rute jalur kereta, tanpa memedulikan warna cat stasiun, lekukan jalan raya di atasnya, atau pohon-pohon di sekitarnya karena detail itu tidak penting bagi navigasi penumpang.
+            </span>
+          </button>
+
+          <button class="cornerstone-card" type="button" onclick="toggleCornerstone(this)">
+            <span class="cornerstone-title">📜 Algoritma (Algorithms)</span>
+            <span class="cornerstone-desc">Mengembangkan solusi langkah demi langkah untuk memecahkan masalah, atau aturan yang harus diikuti.</span>
+            <span class="hidden-detail">
+              <strong>Contoh Nyata:</strong> Resep memasak kue atau instruksi membuat mi instan adalah algoritma. Jika langkah-langkah diacak (misal memasukkan bumbu sebelum merebus air), hasil masakan bisa gagal. Urutan langkah harus tepat.
+            </span>
+          </button>
+
+        </div>
+
+        <p>
+          Setiap batu fondasi sama pentingnya dengan yang lainnya. Mereka seperti kaki-kaki pada sebuah meja - jika satu kaki hilang,
+          meja tersebut kemungkinan besar akan runtuh. Menerapkan keempat teknik ini dengan benar akan sangat membantu ketika memprogram komputer.
+        </p>
+
+        <h3>Berpikir komputasional dalam praktik</h3>
+        <p>Masalah yang kompleks adalah masalah yang pada pandangan pertama tidak kita ketahui cara menyelesaikannya dengan mudah.</p>
+        <p>
+          Berpikir komputasional melibatkan tindakan mengambil masalah kompleks tersebut dan memecahnya menjadi serangkaian masalah kecil yang lebih mudah dikelola
+          (<strong>dekomposisi</strong>). Masing-masing masalah kecil ini kemudian dapat diperiksa secara individual, mempertimbangkan bagaimana masalah serupa
+          telah diselesaikan sebelumnya (<strong>pengenalan pola</strong>), dan hanya berfokus pada detail penting sementara mengabaikan informasi yang tidak relevan
+          (<strong>abstraksi</strong>). Selanjutnya, langkah-langkah atau aturan sederhana untuk menyelesaikan masing-masing masalah kecil tersebut dapat dirancang
+          (<strong>algoritma</strong>).
+        </p>
+        <p>Akhirnya, langkah-langkah atau aturan sederhana ini digunakan untuk memprogram komputer guna membantu menyelesaikan masalah kompleks dengan cara terbaik.</p>
+
+        <div class="page-nav">
+          <span></span>
+          <button class="bbc-btn" type="button" onclick="loadPage(2)">Halaman Berikutnya: Berpikir secara komputasional →</button>
+        </div>
+      </section>
+
+      <!-- PAGE 2: THINKING COMPUTATIONALLY -->
+      <section class="revision-page" id="page-2">
+        <h2>Berpikir secara komputasional</h2>
+
+        <p>
+          Berpikir secara komputasional <strong>bukanlah pemrograman</strong>. Itu bahkan bukan berpikir seperti komputer,
+          karena komputer tidak berpikir, dan tidak dapat berpikir.
+        </p>
+        <p>
+          Secara sederhana, pemrograman memberi tahu komputer <em>apa</em> yang harus dilakukan dan <em>bagaimana</em> melakukannya.
+          Berpikir komputasional memungkinkan Anda merumuskan dengan tepat apa yang harus diperintahkan kepada komputer untuk dilakukan.
+        </p>
+
+        <div class="callout-box">
+          <p><strong>Contoh Analoginya:</strong></p>
+          <p>
+            Jika Anda setuju untuk bertemu teman di suatu tempat yang belum pernah Anda kunjungi sebelumnya, Anda kemungkinan besar akan
+            merencanakan rute perjalanan Anda sebelum melangkah keluar rumah. Anda mungkin mempertimbangkan rute yang tersedia dan rute mana
+            yang "terbaik" - ini mungkin rute terpendek, rute tercepat, atau rute yang melewati toko favorit Anda di sepanjang jalan. Anda kemudian
+            akan mengikuti petunjuk langkah demi langkah untuk sampai ke sana.
+          </p>
+          <p>
+            Dalam kasus ini, bagian **perencanaan** adalah seperti **berpikir komputasional**, dan tindakan **mengikuti petunjuk** adalah seperti **pemrograman**.
+          </p>
+        </div>
+
+        <p>
+          Kemampuan untuk mengubah masalah kompleks menjadi masalah yang dapat kita pahami dengan mudah adalah keterampilan yang sangat berguna.
+          Bahkan, itu adalah keterampilan yang sebenarnya sudah Anda miliki dan mungkin Anda gunakan setiap hari.
+        </p>
+
+        <h3>Contoh 1: Memutuskan rencana pergi bersama teman</h3>
+        <p>Jika semua teman Anda menyukai hal yang berbeda-beda, Anda perlu memutuskan beberapa hal penting:</p>
+        <ul>
+          <li>apa yang bisa kita lakukan?</li>
+          <li>ke mana kita bisa pergi?</li>
+          <li>siapa yang ingin melakukan apa?</li>
+          <li>apa yang pernah kita lakukan sebelumnya yang sukses di masa lalu? (pengenalan pola)</li>
+          <li>berapa banyak uang yang kita miliki dan berapa biaya dari setiap pilihan? (abstraksi - mengabaikan detail kecil)</li>
+          <li>seperti apa prakiraan cuacanya?</li>
+          <li>berapa banyak waktu yang kita miliki?</li>
+        </ul>
+        <p>Dari informasi ini, Anda dan teman-teman dapat memutuskan lebih mudah ke mana harus pergi dan apa yang harus dilakukan.</p>
+
+        <h3>Contoh 2: Bermain video game</h3>
+        <p>Tergantung pada jenis game-nya, untuk menyelesaikan suatu level Anda perlu tahu:</p>
+        <ul>
+          <li>item apa yang perlu Anda kumpulkan, bagaimana cara mengumpulkannya, dan berapa banyak waktu yang Anda miliki untuk mengumpulkannya?</li>
+          <li>di mana pintu keluarnya dan rute terbaik untuk mencapainya dalam waktu secepat mungkin?</li>
+          <li>apa saja jenis musuh yang ada dan apa titik lemah mereka? (pengenalan pola &amp; abstraksi)</li>
+        </ul>
+        <p>Dari detail ini Anda dapat menyusun strategi (algoritma) untuk menyelesaikan level tersebut dengan cara yang paling efisien.</p>
+
+        <div class="page-nav">
+          <button class="bbc-btn secondary" type="button" onclick="loadPage(1)">← Halaman Sebelumnya</button>
+          <button class="bbc-btn" type="button" onclick="loadPage(3)">Berikutnya: Uji Pemahaman Anda (Kuis) →</button>
+        </div>
+      </section>
+
+      <!-- PAGE 3: TEST QUESTIONS (QUIZ) -->
+      <section class="revision-page" id="page-3">
+        <h2>Kuis: Pengenalan Berpikir Komputasional</h2>
+        <p>Uji pemahaman Anda tentang konsep berpikir komputasional dengan kuis 10 soal berikut.</p>
+
+        <div class="score-card hide-element" id="scoreCard">
+          <h3>Hasil Tes Anda</h3>
+          <div class="score-num"><span id="userScore">0</span> / 10</div>
+          <p id="scoreMessage" class="space-top-10 bold-text"></p>
+          <button class="bbc-btn score-card-btn" type="button" onclick="resetQuiz()">Ulangi Kuis</button>
+        </div>
+
+        <form id="quizForm" class="quiz-container">
+
+          <!-- Q1 -->
+          <div class="question-block" id="qblock-0">
+            <div class="question-text">1. Apa yang dimaksud dengan berpikir komputasional?</div>
+            <label class="option-label"><input type="radio" name="q0" value="a" /> Cara berpikir untuk menulis baris kode pemrograman dengan cepat.</label>
+            <label class="option-label"><input type="radio" name="q0" value="b" /> Cara memecahkan masalah kompleks agar dapat dipahami dan diselesaikan oleh manusia atau komputer.</label>
+            <label class="option-label"><input type="radio" name="q0" value="c" /> Proses memaksa otak manusia berpikir persis seperti robot / chip komputer.</label>
+            <div class="quiz-feedback" id="qfb-0"></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="question-block" id="qblock-1">
+            <div class="question-text">2. Manakah yang BUKAN merupakan salah satu dari empat pilar berpikir komputasional?</div>
+            <label class="option-label"><input type="radio" name="q1" value="a" /> Dekomposisi</label>
+            <label class="option-label"><input type="radio" name="q1" value="b" /> Pengkodean (Coding)</label>
+            <label class="option-label"><input type="radio" name="q1" value="c" /> Abstraksi</label>
+            <div class="quiz-feedback" id="qfb-1"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="question-block" id="qblock-2">
+            <div class="question-text">3. Apa itu dekomposisi?</div>
+            <label class="option-label"><input type="radio" name="q2" value="a" /> Memecah masalah besar/kompleks menjadi sub-masalah kecil yang lebih mudah dikelola.</label>
+            <label class="option-label"><input type="radio" name="q2" value="b" /> Menghapus detail yang tidak penting untuk fokus pada inti masalah.</label>
+            <label class="option-label"><input type="radio" name="q2" value="c" /> Membuat langkah-langkah berurutan untuk menyelesaikan masalah.</label>
+            <div class="quiz-feedback" id="qfb-2"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="question-block" id="qblock-3">
+            <div class="question-text">4. Mengapa penting melakukan dekomposisi pada masalah kompleks?</div>
+            <label class="option-label"><input type="radio" name="q3" value="a" /> Agar komputer bisa berjalan tanpa membutuhkan memori.</label>
+            <label class="option-label"><input type="radio" name="q3" value="b" /> Supaya kita bisa langsung mengetik kode program tanpa memikirkan solusinya.</label>
+            <label class="option-label"><input type="radio" name="q3" value="c" /> Agar masalah tersebut menjadi lebih sederhana, lebih mudah dipahami, dan bisa diselesaikan satu per satu.</label>
+            <div class="quiz-feedback" id="qfb-3"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="question-block" id="qblock-4">
+            <div class="question-text">5. Apa pilar CT yang digunakan saat kita mengenali kesamaan antara masalah yang sedang dihadapi dengan masalah yang pernah diselesaikan sebelumnya?</div>
+            <label class="option-label"><input type="radio" name="q4" value="a" /> Pengenalan Pola</label>
+            <label class="option-label"><input type="radio" name="q4" value="b" /> Abstraksi</label>
+            <label class="option-label"><input type="radio" name="q4" value="c" /> Algoritma</label>
+            <div class="quiz-feedback" id="qfb-4"></div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="question-block" id="qblock-5">
+            <div class="question-text">6. Saat membuat daftar hadir siswa digital, guru hanya mencatat nama dan status kehadiran, lalu mengabaikan warna sepatu siswa. Ini adalah penerapan dari...</div>
+            <label class="option-label"><input type="radio" name="q5" value="a" /> Dekomposisi</label>
+            <label class="option-label"><input type="radio" name="q5" value="b" /> Abstraksi</label>
+            <label class="option-label"><input type="radio" name="q5" value="c" /> Algoritma</label>
+            <div class="quiz-feedback" id="qfb-5"></div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="question-block" id="qblock-6">
+            <div class="question-text">7. Apa yang terjadi jika kita tidak menggunakan pilar abstraksi saat memecahkan masalah?</div>
+            <label class="option-label"><input type="radio" name="q6" value="a" /> Kita akan tenggelam dalam detail yang tidak penting dan bisa menghasilkan model solusi yang salah.</label>
+            <label class="option-label"><input type="radio" name="q6" value="b" /> Komputer akan otomatis mati karena kelebihan beban logika.</label>
+            <label class="option-label"><input type="radio" name="q6" value="c" /> Masalah tidak akan bisa dipecah menjadi bagian-bagian kecil.</label>
+            <div class="quiz-feedback" id="qfb-6"></div>
+          </div>
+
+          <!-- Q8 -->
+          <div class="question-block" id="qblock-7">
+            <div class="question-text">8. Apa itu algoritma?</div>
+            <label class="option-label"><input type="radio" name="q7" value="a" /> Pengurutan data dari yang terkecil ke terbesar secara acak.</label>
+            <label class="option-label"><input type="radio" name="q7" value="b" /> Serangkaian instruksi atau langkah demi langkah yang jelas dan berurutan untuk menyelesaikan suatu masalah.</label>
+            <label class="option-label"><input type="radio" name="q7" value="c" /> Pengabaian data yang tidak penting untuk mempercepat RAM.</label>
+            <div class="quiz-feedback" id="qfb-7"></div>
+          </div>
+
+          <!-- Q9 -->
+          <div class="question-block" id="qblock-8">
+            <div class="question-text">9. Yang manakah dari hal berikut yang paling mirip dengan algoritma di kehidupan sehari-hari?</div>
+            <label class="option-label"><input type="radio" name="q8" value="a" /> Menatap lukisan di museum seni.</label>
+            <label class="option-label"><input type="radio" name="q8" value="b" /> Mengikuti resep langkah-langkah membuat kue.</label>
+            <label class="option-label"><input type="radio" name="q8" value="c" /> Mengacak tumpukan kartu nama di meja.</label>
+            <div class="quiz-feedback" id="qfb-8"></div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="question-block" id="qblock-9">
+            <div class="question-text">10. Mengapa berpikir komputasional dinilai sebagai pilar dasar sebelum belajar coding?</div>
+            <label class="option-label"><input type="radio" name="q9" value="a" /> Karena CT mengajarkan kita bahasa pemrograman tingkat lanjut seperti C++ secara instan.</label>
+            <label class="option-label"><input type="radio" name="q9" value="b" /> Karena CT melatih logika berpikir sistematis agar kita tahu apa yang harus diperintahkan kepada komputer melalui kode.</label>
+            <label class="option-label"><input type="radio" name="q9" value="c" /> Karena CT membuat komputer bisa menulis kodenya sendiri tanpa bantuan manusia.</label>
+            <div class="quiz-feedback" id="qfb-9"></div>
+          </div>
+
+          <button class="bbc-btn" type="button" onclick="submitQuiz()">Kirim Jawaban &amp; Cek Skor</button>
+        </form>
+
+        <div class="page-nav">
+          <button class="bbc-btn secondary" type="button" onclick="loadPage(2)">← Halaman Sebelumnya</button>
+          <span></span>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- BBC Footer -->
+  <footer class="bbc-footer">
+    <p>© 2026 BBC. BBC tidak bertanggung jawab atas konten situs eksternal.</p>
+    <p class="space-top-10">
+      <a href="#">Ketentuan Penggunaan</a> |
+      <a href="#">Tentang BBC Bitesize</a> |
+      <a href="#">Kebijakan Privasi</a> |
+      <a href="#">Aksesibilitas</a>
+    </p>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        sidebar.classList.toggle('open');
+      }
+    }
+
+    function loadPage(pageNumber) {
+      // Hide all pages
+      document.querySelectorAll('.revision-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      // Deactivate all menu items
+      document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // Show current page
+      document.getElementById('page-' + pageNumber).classList.add('active');
+      // Activate current menu item
+      document.getElementById('menu-' + pageNumber).classList.add('active');
+
+      // Close mobile menu if open
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar) {
+        sidebar.classList.remove('open');
+      }
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleCornerstone(card) {
+      card.classList.toggle('active');
+      const detail = card.querySelector('.hidden-detail');
+      detail.classList.toggle('show');
+    }
+
+    // Quiz logic
+    const answers = {
+      q0: 'b',
+      q1: 'b',
+      q2: 'a',
+      q3: 'c',
+      q4: 'a',
+      q5: 'b',
+      q6: 'a',
+      q7: 'b',
+      q8: 'b',
+      q9: 'b'
+    };
+
+    const explanations = {
+      q0: 'Benar. CT adalah metode memecahkan masalah agar bisa diselesaikan manusia atau mesin.',
+      q1: 'Benar. Coding adalah implementasi programming, bukan 4 pilar dasar CT.',
+      q2: 'Benar. Dekomposisi adalah memecah masalah besar menjadi bagian-bagian kecil.',
+      q3: 'Benar. Memecah masalah kompleks membuat tiap bagian lebih mudah dipahami dan diselesaikan.',
+      q4: 'Benar. Pengenalan pola mencari kesamaan antar masalah.',
+      q5: 'Benar. Mengabaikan detail yang tidak penting (seperti warna sepatu) adalah abstraksi.',
+      q6: 'Benar. Tanpa abstraksi, kita akan kebingungan karena detail tidak penting yang terlalu banyak.',
+      q7: 'Benar. Algoritma adalah instruksi langkah demi langkah yang berurutan.',
+      q8: 'Benar. Resep makanan adalah contoh algoritma nyata karena urutannya wajib benar.',
+      q9: 'Benar. CT menyiapkan logika pemecahan masalah sebelum kita mulai menulis kode komputer.'
+    };
+
+    function submitQuiz() {
+      let score = 0;
+      const form = document.getElementById('quizForm');
+
+      for (let i = 0; i < 10; i++) {
+        const questionName = 'q' + i;
+        const selectedOption = form.elements[questionName].value;
+        const correctValue = answers[questionName];
+        const block = document.getElementById('qblock-' + i);
+        const fb = document.getElementById('qfb-' + i);
+
+        // Reset classes
+        block.querySelectorAll('.option-label').forEach(label => {
+          label.className = 'option-label disabled';
+          // Disable radio button
+          label.querySelector('input').disabled = true;
+        });
+
+        if (selectedOption === correctValue) {
+          score++;
+          // Find correct input label and style it
+          block.querySelectorAll('.option-label').forEach(label => {
+            if (label.querySelector('input').value === correctValue) {
+              label.className = 'option-label correct disabled';
+            }
+          });
+          fb.textContent = explanations[questionName];
+          fb.className = 'quiz-feedback ok';
+        } else {
+          // Style chosen wrong input
+          block.querySelectorAll('.option-label').forEach(label => {
+            if (label.querySelector('input').value === selectedOption) {
+              label.className = 'option-label wrong disabled';
+            }
+            if (label.querySelector('input').value === correctValue) {
+              label.className = 'option-label correct disabled';
+            }
+          });
+          fb.textContent = 'Salah. ' + explanations[questionName];
+          fb.className = 'quiz-feedback no';
+        }
+      }
+
+      // Display score card
+      document.getElementById('userScore').textContent = score;
+      const card = document.getElementById('scoreCard');
+      card.style.display = 'block';
+
+      const msg = document.getElementById('scoreMessage');
+      if (score === 10) {
+        msg.textContent = 'Luar biasa! Pemahaman Anda sempurna.';
+      } else if (score >= 7) {
+        msg.textContent = 'Bagus sekali! Anda memahami sebagian besar konsep dengan baik.';
+      } else {
+        msg.textContent = 'Silakan baca kembali panduan di halaman 1 & 2 dan coba lagi.';
+      }
+
+      window.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      const form = document.getElementById('quizForm');
+      form.reset();
+
+      for (let i = 0; i < 10; i++) {
+        const block = document.getElementById('qblock-' + i);
+        const fb = document.getElementById('qfb-' + i);
+
+        fb.style.display = 'none';
+        block.querySelectorAll('.option-label').forEach(label => {
+          label.className = 'option-label';
+          label.querySelector('input').disabled = false;
+        });
+      }
+
+      document.getElementById('scoreCard').style.display = 'none';
+      window.scrollTo({ top: document.getElementById('quizForm').offsetTop - 80, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

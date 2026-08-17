@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pseudocode — Gampang Dipahami | Informatika X</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #a78bfa;
+    --good: #34d399;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --pill: #334155;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  .deck { height: 100%; width: 100%; position: relative; }
+  .slide {
+    display: none;
+    height: 100%;
+    padding: 40px 64px 80px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    animation: fadeIn 0.35s ease;
+  }
+  .slide.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  h1 { font-size: 2.3rem; line-height: 1.15; }
+  h2 { font-size: 1.8rem; color: var(--accent); }
+  h3 { font-size: 1.2rem; color: var(--accent-2); margin-bottom: 4px; }
+  p, li { font-size: 1.1rem; line-height: 1.5; }
+  .muted { color: var(--muted); }
+  .muted-small { color: var(--muted); font-size: 0.95rem; }
+  .small-text { font-size: 0.9rem; }
+  .card-p { font-size: 0.9rem; }
+  .space-top { margin-top: 8px; }
+  .space-top-6 { margin-top: 6px; }
+  .space-top-10 { margin-top: 10px; }
+  .pre-code { font-size: 0.82rem; line-height: 1.35; color: #cbd5e1; margin-top: 4px; white-space: pre-wrap; }
+  .eyebrow {
+    display: inline-block;
+    background: var(--pill);
+    color: var(--accent);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .card {
+    background: var(--card);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .card .icon { font-size: 1.5rem; margin-bottom: 4px; }
+  .tag {
+    display: inline-block; padding: 3px 8px; border-radius: 8px;
+    font-size: 0.78rem; font-weight: 700;
+  }
+  .tag.good { background: rgba(52,211,153,.15); color: var(--good); }
+  .tag.bad { background: rgba(248,113,113,.15); color: var(--bad); }
+  .tag.warn { background: rgba(251,191,36,.15); color: var(--warn); }
+  .tag.info { background: rgba(56,189,248,.15); color: var(--accent); }
+  .quiz-option {
+    display: block; width: 100%; text-align: left;
+    background: var(--bg-soft); border: 1px solid #334155; color: var(--text);
+    padding: 10px 14px; border-radius: 10px; font-size: 0.98rem;
+    cursor: pointer; margin-bottom: 6px;
+  }
+  .quiz-option:hover { border-color: var(--accent); }
+  .quiz-option.correct { border-color: var(--good); background: rgba(52,211,153,.12); }
+  .quiz-option.wrong { border-color: var(--bad); background: rgba(248,113,113,.12); }
+  .quiz-option:disabled { cursor: default; }
+  .feedback { min-height: 20px; font-weight: 700; font-size: 0.95rem; }
+  .feedback.ok { color: var(--good); }
+  .feedback.no { color: var(--bad); }
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(15,23,42,.92); border-top: 1px solid #334155;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); z-index: 50;
+  }
+  .nav button {
+    background: var(--bg-soft); color: var(--text); border: 1px solid #475569;
+    border-radius: 10px; padding: 8px 16px; font-size: 0.9rem; cursor: pointer;
+  }
+  .nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .progress-wrap { flex: 1; margin: 0 20px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .progress-bar { width: 100%; max-width: 400px; height: 5px; background: #334155; border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .25s ease; }
+  .progress-text { font-size: 0.8rem; color: var(--muted); }
+  .steps { counter-reset: step; list-style: none; }
+  .steps li {
+    counter-increment: step; margin-bottom: 6px; padding-left: 40px; position: relative;
+  }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--accent);
+    color: #0f172a; font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .list-check { list-style: none; }
+  .list-check li { padding-left: 24px; position: relative; margin-bottom: 5px; }
+  .list-check li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 700; }
+  .kbd {
+    background: #334155; border-radius: 6px; padding: 2px 6px;
+    font-family: ui-monospace, monospace; font-size: 0.85em;
+  }
+  .target-select {
+    background: var(--bg-soft); color: var(--text); border: 1px solid #475569;
+    border-radius: 10px; padding: 8px 12px; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .target-select:hover { border-color: var(--accent); }
+  .target-select:focus { outline: none; border-color: var(--accent); }
+  .row label { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+  table.simple { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  table.simple th, table.simple td { border: 1px solid #334155; padding: 6px 8px; text-align: left; }
+  table.simple th { background: #0b1220; color: var(--accent); }
+  .title-hero {
+    background: radial-gradient(circle at top right, rgba(56,189,248,.18), transparent 50%),
+                radial-gradient(circle at bottom left, rgba(167,139,250,.15), transparent 45%);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .chip {
+    background: #0b1220; border: 1px solid #334155; border-radius: 10px;
+    padding: 8px 10px; font-weight: 700; min-width: 68px; text-align: center;
+  }
+  .chip.on { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56,189,248,.25); }
+  .chip.ok { border-color: var(--good); color: var(--good); background: rgba(52,211,153,.1); }
+  .chip.off { opacity: .35; text-decoration: line-through; }
+  .log {
+    font-family: ui-monospace, Consolas, monospace; font-size: .85rem;
+    background: #0b1220; border: 1px solid #334155; border-radius: 12px;
+    padding: 10px; min-height: 58px; white-space: pre-wrap; color: #cbd5e1;
+  }
+  .btn {
+    background: var(--accent); color: #0f172a; border: none; border-radius: 10px;
+    padding: 8px 12px; font-weight: 800; cursor: pointer; font-size: 0.9rem;
+  }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid #475569; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pseudo {
+    font-family: ui-monospace, Consolas, monospace; font-size: 0.78rem;
+    background: #0b1220; border: 1px solid #334155; border-radius: 12px;
+    padding: 8px; color: #cbd5e1; overflow: hidden;
+  }
+  .pline { padding: 2px 8px; border-left: 3px solid transparent; transition: all .2s; white-space: pre; }
+  .pline.on { background: rgba(56,189,248,.15); border-left-color: var(--accent); color: #fff; }
+  .pline.ok { background: rgba(52,211,153,.15); border-left-color: var(--good); color: #fff; }
+  .pline .cm { color: #94a3b8; font-style: italic; }
+  .highlight-card { border-color: var(--accent); }
+  .half-column { display: flex; flex-direction: column; gap: 4px; }
+  .half-column h4 { font-size: 0.9rem; color: var(--accent-2); }
+  @media (max-width: 900px) {
+    .slide { padding: 20px 16px 80px; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Judul -->
+  <section class="slide active title-hero" data-title="Judul">
+    <span class="eyebrow">Informatika · Kelas X · Fase E</span>
+    <h1>Pseudocode<br/>Cara Jelasin ke Komputer</h1>
+    <p class="muted">Gampang banget! Persis kayak jelasin langkah ke teman, cuma ditulis rapi pakai kata kunci khusus.</p>
+    <p class="small-text">Navigasi: tombol <span class="kbd">→</span> <span class="kbd">←</span> di keyboard atau tombol di bawah.</p>
+  </section>
+
+  <!-- Slide 2: Apersepsi -->
+  <section class="slide" data-title="Jelasin ke Teman">
+    <span class="eyebrow">Pernahkah Kamu?</span>
+    <h2>Pernah Jelasin Cara Bikin Akun Game?</h2>
+    <div class="grid-2">
+      <div class="card">
+        <span class="tag bad">Asal-asalan</span>
+        <p class="space-top">"Ya gitu deh, tinggal install aja!" — temanmu bingung, urutannya acak, hasilnya tidak bisa diulang.</p>
+      </div>
+      <div class="card">
+        <span class="tag good">Langkah Jelas</span>
+        <p class="space-top">"1. Buka Play Store, 2. Ketik nama game, 3. Tekan Install..." — temanmu langsung bisa ikut!</p>
+      </div>
+    </div>
+    <p class="muted space-top-6"><strong>Pseudocode</strong> itu persis begitu — tapi kita "menjelaskan" ke komputer. Ditulis rapi, nanti tinggal diterjemahkan jadi program.</p>
+  </section>
+
+  <!-- Slide 3: KKA vs IT -->
+  <section class="slide" data-title="KKA vs IT">
+    <span class="eyebrow">Jembatan Belajar</span>
+    <h2>Kenapa Belajar Ini Lagi (KKA vs Informatika)?</h2>
+    <div class="grid-2">
+      <div class="card">
+        <span class="tag warn">Kelas KKA</span>
+        <h3 class="space-top">Penjelasan Umum</h3>
+        <p class="card-p">Fokus pada <strong>teori dan definisi dasar</strong> saja (apa itu pseudocode dan algoritmanya).</p>
+      </div>
+      <div class="card highlight-card">
+        <span class="tag good">Kelas Informatika (IT)</span>
+        <h3 class="space-top">Praktik & Logika</h3>
+        <p class="card-p">Kita pakai untuk **memecahkan masalah nyata** (seperti strategi *Searching* kemarin) dan sebagai **jembatan wajib sebelum koding Python minggu depan**.</p>
+      </div>
+    </div>
+    <p class="muted space-top-6">Di kelas IT, kita tidak sekadar menghafal definisi, melainkan melatih otot logika kita.</p>
+  </section>
+
+  <!-- Slide 4: Jembatan berpikir ke kode -->
+  <section class="slide" data-title="Jembatan ke Kode">
+    <span class="eyebrow">Posisi Pseudocode</span>
+    <h2>Resep Dulu, Baru Masak</h2>
+    <div class="grid-3 space-top-10">
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h3>Cara Berpikir</h3>
+        <p class="card-p">"Caranya gimana?" — ide pemecahan masalah di kepala kita.</p>
+      </div>
+      <div class="card highlight-card">
+        <div class="icon">📜</div>
+        <h3>Pseudocode</h3>
+        <p class="card-p"><span class="tag info">Di sinilah kita</span><br/>Langkah berpikir ditulis rapi pakai bahasa manusia.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💻</div>
+        <h3>Kode Python</h3>
+        <p class="card-p">Kode sesungguhnya yang siap dijalankan komputer.</p>
+      </div>
+    </div>
+    <p class="muted space-top-10">Seperti resep → masakan. Kita tulis resepnya dulu (pseudocode), baru dimasak jadi kode program.</p>
+  </section>
+
+  <!-- Slide 5: 6 Kata Kunci Ajaib -->
+  <section class="slide" data-title="6 Kata Kunci">
+    <span class="eyebrow">Yang Perlu Dihafal</span>
+    <h2>Hanya 6 Kata Kunci Ajaib!</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">🚪</div>
+        <h3>MULAI / SELESAI</h3>
+        <p class="card-p">Awal &amp; akhir. Pintu masuk &amp; keluar program.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📥</div>
+        <h3>BACA / TULIS</h3>
+        <p class="card-p">Menerima input pengguna / menampilkan hasil ke layar.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔀</div>
+        <h3>JIKA ... MAKA</h3>
+        <p class="card-p">Mengambil keputusan (JIKA begini MAKA lakukan ini).</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔁</div>
+        <h3>UNTUK / SELAMA</h3>
+        <p class="card-p">Mengulangi langkah tertentu secara otomatis.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔐</div>
+        <h3>SELESAI JIKA / UNTUK</h3>
+        <p class="card-p">Tanda penutup blok agar logika tidak bercampur.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎵</div>
+        <h3>Ingat Lagu Ini</h3>
+        <p class="card-p"><em>"MULAI-SELESAI, BACA-TULIS, JIKA-LAINNYA, UNTUK-SAMPAI."</em></p>
+      </div>
+    </div>
+    <p class="muted space-top-10">Kuasai 6 kata kunci ini, kamu sudah bisa merancang algoritma apa saja!</p>
+  </section>
+
+  <!-- Slide 6: 5 Aturan Emas -->
+  <section class="slide" data-title="5 Aturan">
+    <span class="eyebrow">Sebelum Menulis</span>
+    <h2>5 Aturan Emas Menulis Pseudocode</h2>
+    <ol class="steps">
+      <li><strong>Bahasa konsisten</strong> — pilih Indonesia atau Inggris, jangan dicampur.</li>
+      <li><strong>Satu baris = satu perintah</strong> — jangan tumpuk banyak aksi di satu baris.</li>
+      <li><strong>Nama variabel jelas</strong> — gunakan <code>totalBelanja</code>, hindari nama abstrak seperti <code>x</code>.</li>
+      <li><strong>Gunakan Indentasi</strong> — geser tulisan ke kanan di dalam blok <code>JIKA</code> atau <code>UNTUK</code>.</li>
+      <li><strong>Tutup yang dibuka</strong> — pastikan ditutup rapi dengan <code>SELESAI JIKA / UNTUK</code>.</li>
+    </ol>
+    <p class="muted space-top-10">Aturan indentasi ini sangat penting karena bahasa Python juga memakainya minggu depan!</p>
+  </section>
+
+  <!-- Slide 7: Indeks 1-Based vs 0-Based -->
+  <section class="slide" data-title="Tipe Indeks">
+    <span class="eyebrow">Aturan Berhitung</span>
+    <h2>Indeks Manusia vs Indeks Komputer</h2>
+    <p class="muted">Daftar siswa: <code>["Andi", "Bima", "Rina"]</code></p>
+    <div class="grid-2">
+      <div class="card">
+        <span class="tag info">Indeks Manusia (1-Based)</span>
+        <h3 class="space-top">Mulai dari 1</h3>
+        <p class="card-p">Urutan 1: Andi, Urutan 2: Bima, Urutan 3: Rina.<br/>Ditulis: <code>UNTUK i = 1 SAMPAI 3</code></p>
+      </div>
+      <div class="card highlight-card">
+        <span class="tag good">Indeks Komputer (0-Based)</span>
+        <h3 class="space-top">Mulai dari 0</h3>
+        <p class="card-p">Indeks 0: Andi, Indeks 1: Bima, Indeks 2: Rina.<br/>Ditulis: <code>UNTUK i = 0 SAMPAI 2</code></p>
+      </div>
+    </div>
+    <p class="muted space-top-6">Komputer dan bahasa Python menghitung dari <strong>0</strong>. Memahami ini penting agar kodingmu tidak error minggu depan!</p>
+  </section>
+
+  <!-- Slide 8: Contoh dunia nyata kasir kantin -->
+  <section class="slide" data-title="Contoh Nyata">
+    <span class="eyebrow">Contoh Kasir Kantin</span>
+    <h2>Logika Kasir Kantin</h2>
+    <div class="grid-2">
+      <div>
+        <pre class="pseudo"><span class="pline">MULAI</span>
+<span class="pline">  BACA uang</span>
+<span class="pline">  JIKA uang >= 15000 MAKA</span>
+<span class="pline">    TULIS "Ini nasi gorengnya"</span>
+<span class="pline">  LAINNYA</span>
+<span class="pline">    TULIS "Uangmu kurang"</span>
+<span class="pline">  SELESAI JIKA</span>
+<span class="pline">SELESAI</span></pre>
+      </div>
+      <div class="card">
+        <h3>Bagaimana Logikanya?</h3>
+        <ul class="list-check space-top-10">
+          <li><code>BACA uang</code> — mengambil input nominal uang.</li>
+          <li><code>JIKA uang >= 15000</code> — kondisi minimal harga nasi goreng.</li>
+          <li><code>TULIS ...</code> — output berupa struk/kata-kata kasir.</li>
+        </ul>
+        <p class="card-p muted space-top-10">Uang dimasukkan Rp20.000 → Syarat terpenuhi → Muncul <strong>"Ini nasi gorengnya"</strong> ✅</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 9: Contoh Linear -->
+  <section class="slide" data-title="Pseudocode Linear">
+    <span class="eyebrow">Pencarian Linear</span>
+    <h2>Cek Absen Satu per Satu (Linear Search)</h2>
+    <div class="grid-2">
+      <div class="half-column">
+        <h4>1-Based (Gaya Manusia)</h4>
+        <pre class="pseudo"><span class="pline">MULAI</span>
+<span class="pline">  BACA daftar, target</span>
+  posisi ← -1
+<span class="pline">  UNTUK i = 1 SAMPAI jumlahNama</span>
+<span class="pline">    JIKA daftar[i] = target MAKA</span>
+<span class="pline">      posisi ← i</span>
+<span class="pline">    SELESAI JIKA</span>
+<span class="pline">  SELESAI UNTUK</span>
+<span class="pline">  TULIS posisi</span>
+<span class="pline">SELESAI</span></pre>
+      </div>
+      <div class="half-column">
+        <h4>0-Based (Gaya Komputer / Python)</h4>
+        <pre class="pseudo"><span class="pline">MULAI</span>
+<span class="pline">  BACA daftar, target</span>
+  posisi ← -1
+<span class="pline">  UNTUK i = 0 SAMPAI jumlahNama - 1</span>
+<span class="pline">    JIKA daftar[i] = target MAKA</span>
+<span class="pline">      posisi ← i</span>
+<span class="pline">    SELESAI JIKA
+  SELESAI UNTUK</span>
+<span class="pline">  TULIS posisi</span>
+<span class="pline">SELESAI</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 10: Contoh Binary -->
+  <section class="slide" data-title="Pseudocode Binary">
+    <span class="eyebrow">Pencarian Binary</span>
+    <h2>Tebak di Tengah (Binary Search)</h2>
+    <div class="grid-2">
+      <div class="half-column">
+        <h4>1-Based (Gaya Manusia)</h4>
+        <pre class="pseudo" style="font-size: 0.72rem;"><span class="pline">MULAI</span>
+  kiri ← 1; kanan ← jumlahNama
+  posisi ← -1
+  SELAMA kiri <= kanan
+    tengah ← (kiri + kanan) / 2
+    JIKA daftar[tengah] = target MAKA
+      posisi ← tengah; kiri ← kanan + 1
+    LAINNYA JIKA daftar[tengah] < target MAKA
+      kiri ← tengah + 1
+    LAINNYA
+      kanan ← tengah - 1
+    SELESAI JIKA
+  SELESAI SELAMA
+  TULIS posisi
+SELESAI</pre>
+      </div>
+      <div class="half-column">
+        <h4>0-Based (Gaya Komputer)</h4>
+        <pre class="pseudo" style="font-size: 0.72rem;"><span class="pline">MULAI</span>
+  kiri ← 0; kanan ← jumlahNama - 1
+  posisi ← -1
+  SELAMA kiri <= kanan
+    tengah ← (kiri + kanan) / 2
+    JIKA daftar[tengah] = target MAKA
+      posisi ← tengah; kiri ← kanan + 1
+    LAINNYA JIKA daftar[tengah] < target MAKA
+      kiri ← tengah + 1
+    LAINNYA
+      kanan ← tengah - 1
+    SELESAI JIKA
+  SELESAI SELAMA
+  TULIS posisi
+SELESAI</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 11: Demo Trace Linear -->
+  <section class="slide" data-title="Demo Trace Linear">
+    <span class="eyebrow">Simulasi Linear</span>
+    <h2>Men-trace Pseudocode Linear</h2>
+    <p class="muted">Daftar barang acak: MEJA, BUKU, LAMPU, TAS, PENSIL, KOMPUTER, KURSI.</p>
+    <div class="row">
+      <label for="linTarget">🎯 Target yang dicari:</label>
+      <select class="target-select" id="linTarget" onchange="linPick()">
+        <option value="MEJA">MEJA</option>
+        <option value="BUKU">BUKU</option>
+        <option value="LAMPU">LAMPU</option>
+        <option value="TAS">TAS</option>
+        <option value="PENSIL" selected>PENSIL</option>
+        <option value="KOMPUTER">KOMPUTER</option>
+        <option value="KURSI">KURSI</option>
+        <option value="—">(Tidak ada → cari yang tidak ada)</option>
+      </select>
+    </div>
+    <div class="chips" id="linChips"></div>
+    <div class="row">
+      <button class="btn" type="button" onclick="linStep()">Langkah berikutnya</button>
+      <button class="btn ghost" type="button" onclick="linReset()">Reset</button>
+    </div>
+    <div class="log" id="linLog">Pilih target di atas, lalu tekan "Langkah berikutnya".</div>
+  </section>
+
+  <!-- Slide 12: Demo Trace Binary -->
+  <section class="slide" data-title="Demo Trace Binary">
+    <span class="eyebrow">Simulasi Binary</span>
+    <h2>Men-trace Pseudocode Binary</h2>
+    <p class="muted">Daftar kata terurut A–Z.</p>
+    <div class="row">
+      <label for="binTarget">🎯 Target yang dicari:</label>
+      <select class="target-select" id="binTarget" onchange="binPick()">
+        <option value="ALGORITMA">ALGORITMA</option>
+        <option value="BINARY">BINARY</option>
+        <option value="DATA">DATA</option>
+        <option value="KOMPUTER">KOMPUTER</option>
+        <option value="LOGIKA">LOGIKA</option>
+        <option value="PROGRAM" selected>PROGRAM</option>
+        <option value="SEARCH">SEARCH</option>
+        <option value="VARIABEL">VARIABEL</option>
+        <option value="—">(Tidak ada → cari yang tidak ada)</option>
+      </select>
+    </div>
+    <div class="chips" id="binChips"></div>
+    <div class="row">
+      <button class="btn" type="button" onclick="binStep()">Langkah berikutnya</button>
+      <button class="btn ghost" type="button" onclick="binReset()">Reset</button>
+    </div>
+    <div class="log" id="binLog">Pilih target di atas, lalu tekan "Langkah berikutnya".</div>
+  </section>
+
+  <!-- Slide 13: 5 Kesalahan -->
+  <section class="slide" data-title="5 Kesalahan">
+    <span class="eyebrow">Hindari Ini</span>
+    <h2>5 Kesalahan yang Sering Terjadi</h2>
+    <div class="grid-3 space-top-10">
+      <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Campur bahasa</h3>
+        <p class="card-p">Menulis <code>BACA</code> dicampur <code>else/input</code>.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧱</div>
+        <h3>Blok tidak ditutup</h3>
+        <p class="card-p">Lupa menulis <code>SELESAI JIKA / UNTUK</code>.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🐍</div>
+        <h3>Menulis kode asli</h3>
+        <p class="card-p">Menaruh sintaks ribet (seperti titik koma <code>;</code> atau kurung kurawal <code>{}</code>).</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏷️</div>
+        <h3>Nama tidak jelas</h3>
+        <p class="card-p">Menggunakan <code>x</code> atau <code>xyz</code> tanpa makna.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🐘</div>
+        <h3>Terlalu panjang</h3>
+        <p class="card-p">Mencantumkan aksi non-logika seperti "ambil pena di meja".</p>
+      </div>
+      <div class="card">
+        <div class="icon">⭐</div>
+        <h3>Tips Utama</h3>
+        <p class="card-p">Tunjukkan ke teman. Kalau dia bingung membacanya, berarti perbaiki!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 14: Kuis 1 -->
+  <section class="slide" data-title="Kuis 1">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>1. Pseudocode paling tepat digambarkan sebagai …</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f1')">Kode program asli yang langsung dijalankan komputer</button>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f1')">Langkah logika terstruktur memakai bahasa manusia sehari-hari</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f1')">Diagram gambar berbentuk alur simbol geometris</button>
+    <div class="feedback" id="f1"></div>
+  </section>
+
+  <!-- Slide 15: Kuis 2 -->
+  <section class="slide" data-title="Kuis 2">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>2. Manakah penulisan variabel (diisi nilai) yang benar?</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f2')">x = 10 (menggunakan tanda sama dengan)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f2')">JIKA harga MAKA 10000</button>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f2')">harga ← 10000 (menggunakan panah kiri, dibaca "diisi")</button>
+    <div class="feedback" id="f2"></div>
+  </section>
+
+  <!-- Slide 16: Kuis 3 -->
+  <section class="slide" data-title="Kuis 3">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>3. Dari mana komputer/Python mulai menghitung indeks data?</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f3')">Dimulai dari angka 1 (1-Based)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f3')">Dimulai dari angka 0 (0-Based)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f3')">Bebas dari angka mana saja tergantung guru</button>
+    <div class="feedback" id="f3"></div>
+  </section>
+
+  <!-- Slide 17: Kuis 4 -->
+  <section class="slide" data-title="Kuis 4">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>4. Menjorokkan teks ke kanan (indentasi) pada isi JIKA/UNTUK berguna untuk...</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f4')">Memperjelas blok logika instruksi dan mempermudah dibaca</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f4')">Menghemat penggunaan memori RAM komputer</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f4')">Menghapus otomatis data yang salah pencarian</button>
+    <div class="feedback" id="f4"></div>
+  </section>
+
+  <!-- Slide 18: Penutup -->
+  <section class="slide" data-title="Penutup">
+    <span class="eyebrow">Kesimpulan</span>
+    <h2>Bawa pulang pelajaran hari ini:</h2>
+    <div class="grid-3 space-top-10">
+      <div class="card">
+        <h3>Pseudocode = Resep</h3>
+        <p class="card-p">Coretan resep berpikir logis. Kode Python = masakan jadinya.</p>
+      </div>
+      <div class="card">
+        <h3>6 Kata Kunci Ajaib</h3>
+        <p class="card-p">MULAI · SELESAI · BACA · TULIS · JIKA-MAKA · UNTUK/SELAMA.</p>
+      </div>
+      <div class="card">
+        <h3>Indeks 0-Based</h3>
+        <p class="card-p">Komputer menghitung dari 0. Selalu ingat perbedaan ini!</p>
+      </div>
+    </div>
+    <p class="space-top-10 small-text">
+      Silakan buka file <span class="kbd">Materi_Pseudocode.md</span> di folder ini untuk penjelasan lengkap, dan kerjakan latihan HOTS-nya ya!
+    </p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prevBtn" type="button" onclick="prev()">← Sebelumnya</button>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+    <div class="progress-text" id="progText">1 / 1</div>
+  </div>
+  <button id="nextBtn" type="button" onclick="next()">Berikutnya →</button>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let idx = 0;
+  function show(i) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    document.getElementById('bar').style.width = ((idx + 1) / slides.length * 100) + '%';
+    document.getElementById('progText').textContent = `${idx + 1} / ${slides.length} · ${slides[idx].dataset.title || ''}`;
+  }
+  function next() { show(idx + 1); }
+  function prev() { show(idx - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  function answer(btn, correct, fid) {
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById(fid);
+    fb.textContent = correct ? 'Benar sekali!' : 'Belum tepat. Coba diskusikan dengan guru / teman.';
+    fb.className = 'feedback ' + (correct ? 'ok' : 'no');
+  }
+
+  // ---- Demo trace Linear Search ----
+  const L = ['MEJA','BUKU','LAMPU','TAS','PENSIL','KOMPUTER','KURSI'];
+  let LT = 'PENSIL';
+  let li = 0, lDone = false;
+  function renderL(state = {}) {
+    const row = document.getElementById('linChips');
+    row.innerHTML = '';
+    L.forEach((w, i) => {
+      const d = document.createElement('div');
+      d.className = 'chip';
+      d.textContent = w;
+      if (state.on === i) d.classList.add('on');
+      if (state.ok === i) d.classList.add('ok');
+      row.appendChild(d);
+    });
+  }
+  function linPick() {
+    LT = document.getElementById('linTarget').value;
+    linReset();
+  }
+  function linReset() {
+    li = 0; lDone = false;
+    renderL();
+    document.getElementById('linLog').textContent = `Target: "${LT}". Siap men-trace Linear Search. Tekan "Langkah berikutnya".`;
+  }
+  function linStep() {
+    if (lDone) return;
+    const log = document.getElementById('linLog');
+    if (li >= L.length) {
+      log.textContent += `\nKEMBALIKAN -1 → "${LT}" tidak ditemukan. Perbandingan selesai.`;
+      lDone = true; return;
+    }
+    renderL({ on: li });
+    if (L[li] === LT) {
+      log.textContent += `\nUNTUK i=${li} (Urutan ke-${li+1}): daftar[${li}]=${L[li]} == "${LT}" → KEMBALIKAN i=${li} (Urutan ke-${li+1}). KETEMU!`;
+      renderL({ ok: li }); lDone = true;
+    } else {
+      log.textContent += `\nUNTUK i=${li} (Urutan ke-${li+1}): daftar[${li}]=${L[li]} != "${LT}" → lanjut ke i berikutnya`;
+      li++;
+    }
+  }
+
+  // ---- Demo trace Binary Search ----
+  const B = ['ALGORITMA','BINARY','DATA','KOMPUTER','LOGIKA','PROGRAM','SEARCH','VARIABEL'];
+  let BT = 'PROGRAM';
+  let left = 0, right = B.length - 1, bDone = false;
+  function renderB(state = {}) {
+    const row = document.getElementById('binChips');
+    row.innerHTML = '';
+    B.forEach((w, i) => {
+      const d = document.createElement('div');
+      d.className = 'chip';
+      d.textContent = w;
+      if (state.mid === i) d.classList.add('on');
+      if (state.ok === i) d.classList.add('ok');
+      if (state.off && (i < state.L || i > state.R)) d.classList.add('off');
+      row.appendChild(d);
+    });
+  }
+  function binPick() {
+    BT = document.getElementById('binTarget').value;
+    binReset();
+  }
+  function binReset() {
+    left = 0; right = B.length - 1; bDone = false;
+    renderB({ L: left, R: right, off: true });
+    document.getElementById('binLog').textContent = `Target: "${BT}". Data terurut A–Z. Siap men-trace Binary Search.`;
+  }
+  function binStep() {
+    if (bDone) return;
+    const log = document.getElementById('binLog');
+    if (left > right) {
+      log.textContent += `\nleft=${left} (Urutan ke-${left+1}) > right=${right} (Urutan ke-${right+1}) → KEMBALIKAN -1. "${BT}" tidak ada.`;
+      bDone = true; return;
+    }
+    const mid = Math.floor((left + right) / 2);
+    renderB({ mid, L: left, R: right, off: true });
+    if (B[mid] === BT) {
+      log.textContent += `\ntengah=${mid} (Urutan ke-${mid+1}): daftar[${mid}]=${B[mid]} == "${BT}" → KEMBALIKAN tengah=${mid} (Urutan ke-${mid+1}). KETEMU!`;
+      renderB({ ok: mid, L: left, R: right, off: true });
+      bDone = true;
+    } else if (B[mid] < BT) {
+      log.textContent += `\ntengah=${mid} (Urutan ke-${mid+1}): ${B[mid]} < "${BT}" → cari di kanan, kiri = tengah + 1 = ${mid + 1} (Urutan ke-${mid + 2})`;
+      left = mid + 1;
+    } else {
+      log.textContent += `\ntengah=${mid} (Urutan ke-${mid+1}): ${B[mid]} > "${BT}" → cari di kiri, kanan = tengah - 1 = ${mid - 1} (Urutan ke-${mid})`;
+      right = mid - 1;
+    }
+  }
+
+  linReset();
+  binReset();
+  show(0);
+</script>
+</body>
+</html>

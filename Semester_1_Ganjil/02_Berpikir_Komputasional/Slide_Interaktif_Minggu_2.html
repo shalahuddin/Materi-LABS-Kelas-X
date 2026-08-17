@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Minggu 2 — CT Searching (Cara Mencari yang Pintar) | Informatika X</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #a78bfa;
+    --good: #34d399;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --pill: #334155;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  .deck { height: 100%; width: 100%; position: relative; }
+  .slide {
+    display: none;
+    height: 100%;
+    padding: 40px 64px 80px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    animation: fadeIn 0.35s ease;
+  }
+  .slide.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  h1 { font-size: 2.3rem; line-height: 1.15; }
+  h2 { font-size: 1.8rem; color: var(--accent); }
+  h3 { font-size: 1.2rem; color: var(--accent-2); margin-bottom: 4px; }
+  p, li { font-size: 1.1rem; line-height: 1.5; }
+  .muted { color: var(--muted); }
+  .muted-small { color: var(--muted); font-size: 0.95rem; }
+  .small-text { font-size: 0.9rem; }
+  .card-p { font-size: 0.9rem; }
+  .space-top { margin-top: 8px; }
+  .space-top-6 { margin-top: 6px; }
+  .space-top-10 { margin-top: 10px; }
+  .pre-code { font-size: 0.9rem; line-height: 1.4; color: #cbd5e1; margin-top: 6px; white-space: pre-wrap; }
+  .pre-code-pre { font-size: 0.95rem; line-height: 1.45; color: #cbd5e1; margin-top: 8px; white-space: pre-wrap; }
+  .eyebrow {
+    display: inline-block;
+    background: var(--pill);
+    color: var(--accent);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .card {
+    background: var(--card);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .card .icon { font-size: 1.5rem; margin-bottom: 4px; }
+  .tag {
+    display: inline-block; padding: 3px 8px; border-radius: 8px;
+    font-size: 0.78rem; font-weight: 700;
+  }
+  .tag.good { background: rgba(52,211,153,.15); color: var(--good); }
+  .tag.bad { background: rgba(248,113,113,.15); color: var(--bad); }
+  .tag.warn { background: rgba(251,191,36,.15); color: var(--warn); }
+  .tag.info { background: rgba(56,189,248,.15); color: var(--accent); }
+  .quiz-option {
+    display: block; width: 100%; text-align: left;
+    background: var(--bg-soft); border: 1px solid #334155; color: var(--text);
+    padding: 10px 14px; border-radius: 10px; font-size: 0.98rem;
+    cursor: pointer; margin-bottom: 6px;
+  }
+  .quiz-option:hover { border-color: var(--accent); }
+  .quiz-option.correct { border-color: var(--good); background: rgba(52,211,153,.12); }
+  .quiz-option.wrong { border-color: var(--bad); background: rgba(248,113,113,.12); }
+  .quiz-option:disabled { cursor: default; }
+  .feedback { min-height: 20px; font-weight: 700; font-size: 0.95rem; }
+  .feedback.ok { color: var(--good); }
+  .feedback.no { color: var(--bad); }
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(15,23,42,.92); border-top: 1px solid #334155;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); z-index: 50;
+  }
+  .nav button {
+    background: var(--bg-soft); color: var(--text); border: 1px solid #475569;
+    border-radius: 10px; padding: 8px 16px; font-size: 0.9rem; cursor: pointer;
+  }
+  .nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .progress-wrap { flex: 1; margin: 0 20px; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .progress-bar { width: 100%; max-width: 400px; height: 5px; background: #334155; border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .25s ease; }
+  .progress-text { font-size: 0.8rem; color: var(--muted); }
+  .steps { counter-reset: step; list-style: none; }
+  .steps li {
+    counter-increment: step; margin-bottom: 6px; padding-left: 40px; position: relative;
+  }
+  .steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--accent);
+    color: #0f172a; font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .list-check { list-style: none; }
+  .list-check li { padding-left: 24px; position: relative; margin-bottom: 5px; }
+  .list-check li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 700; }
+  .kbd {
+    background: #334155; border-radius: 6px; padding: 2px 6px;
+    font-family: ui-monospace, monospace; font-size: 0.85em;
+  }
+  table.simple { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  table.simple th, table.simple td { border: 1px solid #334155; padding: 6px 8px; text-align: left; }
+  table.simple th { background: #0b1220; color: var(--accent); }
+  .title-hero {
+    background: radial-gradient(circle at top right, rgba(56,189,248,.18), transparent 50%),
+                radial-gradient(circle at bottom left, rgba(167,139,250,.15), transparent 45%);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .chip {
+    background: #0b1220; border: 1px solid #334155; border-radius: 10px;
+    padding: 8px 10px; font-weight: 700; min-width: 68px; text-align: center;
+  }
+  .chip.on { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56,189,248,.25); }
+  .chip.ok { border-color: var(--good); color: var(--good); background: rgba(52,211,153,.1); }
+  .chip.off { opacity: .35; text-decoration: line-through; }
+  .log {
+    font-family: ui-monospace, Consolas, monospace; font-size: .85rem;
+    background: #0b1220; border: 1px solid #334155; border-radius: 12px;
+    padding: 10px; min-height: 58px; white-space: pre-wrap; color: #cbd5e1;
+  }
+  .btn {
+    background: var(--accent); color: #0f172a; border: none; border-radius: 10px;
+    padding: 8px 12px; font-weight: 800; cursor: pointer; font-size: 0.9rem;
+  }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid #475569; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  @media (max-width: 900px) {
+    .slide { padding: 20px 16px 80px; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Judul -->
+  <section class="slide active title-hero" data-title="Judul">
+    <span class="eyebrow">Informatika · Kelas X · Fase E</span>
+    <h1>Cara Mencari yang Pintar<br/>(Searching Kata)</h1>
+    <p class="muted">Modul 2 — Berpikir Komputasional · Minggu Ke-2</p>
+    <p class="muted-small">Mari belajar menyusun aturan mencari kata secara sistematis!</p>
+    <p class="small-text">Gunakan tombol di bawah atau tombol <span class="kbd">→</span> <span class="kbd">←</span> keyboard.</p>
+  </section>
+
+  <!-- Slide 2: Apersepsi -->
+  <section class="slide" data-title="Apersepsi">
+    <span class="eyebrow">Pernahkah Kamu?</span>
+    <h2>Mencari chat "Raka" di WhatsApp?</h2>
+    <div class="grid-2">
+      <div class="card">
+        <span class="tag bad">Asal-asalan / Feeling</span>
+        <p class="space-top">Scroll layar ke atas-bawah tanpa arah, rawan terlewat, lelah, dan boros waktu.</p>
+      </div>
+      <div class="card">
+        <span class="tag good">Pakai Aturan CT</span>
+        <p class="space-top">Ketik kata kunci di search bar → saring nama → langsung ketemu di posisi teratas.</p>
+      </div>
+    </div>
+    <p class="muted space-top-6">Di Informatika, <strong>searching</strong> bukan asal cari, melainkan aturan langkah yang terstruktur.</p>
+  </section>
+
+  <!-- Slide 3: 4 Pilar CT -->
+  <section class="slide" data-title="4 Pilar CT">
+    <span class="eyebrow">Berpikir Komputasional</span>
+    <h2>Searching dalam 4 Pilar CT</h2>
+    <div class="grid-4">
+      <div class="card">
+        <div class="icon">🧱</div>
+        <h3>Dekomposisi</h3>
+        <p class="card-p">Pecah langkah: Tentukan target → pilih cara cari → periksa → laporkan.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔁</div>
+        <h3>Pola</h3>
+        <p class="card-p">Ada pola berulang: ambil data → bandingkan → cocok/tidak → lanjut.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>Abstraksi</h3>
+        <p class="card-p">Bandingkan ejaan nama saja. Foto profil atau status diabaikan.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📜</div>
+        <h3>Algoritma</h3>
+        <p class="card-p">Pilih metode mencari: Cek satu-satu (Linear) atau bagi dua (Binary).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4: Aturan Main -->
+  <section class="slide" data-title="Aturan Main">
+    <span class="eyebrow">Sebelum Mencari</span>
+    <h2>6 Aturan Main Mencari Kata</h2>
+    <ol class="steps">
+      <li><strong>Target Jelas:</strong> Harus tahu pasti kata apa yang dicari.</li>
+      <li><strong>Normalisasi:</strong> Samakan huruf besar/kecil (misal: ubah semua ke huruf besar).</li>
+      <li><strong>Tentukan Arah:</strong> Dari depan ke belakang, dari A ke Z, dsb.</li>
+      <li><strong>Kriteria Ketemu:</strong> Untuk saat ini harus <em>sama persis</em>.</li>
+      <li><strong>Kapan Berhenti:</strong> Berhenti begitu ketemu ATAU jika daftar sudah habis diperiksa.</li>
+      <li><strong>Hitung Perbandingan:</strong> Catat berapa kali kamu mengecek data (efisiensi).</li>
+    </ol>
+  </section>
+
+  <!-- Slide 5: Linear Search -->
+  <section class="slide" data-title="Linear Search">
+    <span class="eyebrow">Cara 1</span>
+    <h2>Linear Search (Cek Satu-satu)</h2>
+    <div class="grid-2">
+      <div>
+        <p>Cara mencari paling dasar: periksa dari depan satu per satu sampai ketemu.</p>
+        <ul class="list-check space-top-10">
+          <li>Data **boleh acak** (tidak perlu diurutkan).</li>
+          <li>Sangat mudah dipahami dan dipraktikkan.</li>
+          <li>Analogi: mencari kunci di kotak yang campur aduk.</li>
+          <li>Makin panjang daftarnya, makin lama carinya (sialnya cek semua).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Langkah Kerjanya</h3>
+        <pre class="pre-code">Mulai dari data pertama.
+Bandingkan dengan target.
+Jika cocok → Stop (Ketemu).
+Jika beda → Geser ke data berikutnya.
+Ulangi sampai data habis.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6: Demo Linear -->
+  <section class="slide" data-title="Demo Linear">
+    <span class="eyebrow">Simulasi Kelas</span>
+    <h2>Cari kata <span class="kbd">PENSIL</span> (Linear)</h2>
+    <p class="muted">Daftar acak: BUKU, MEJA, TAS, PENSIL, MOUSE, KAMERA...</p>
+    <div class="chips" id="linChips"></div>
+    <div class="row">
+      <button class="btn" type="button" onclick="linStep()">Langkah berikutnya</button>
+      <button class="btn ghost" type="button" onclick="linReset()">Reset</button>
+    </div>
+    <div class="log" id="linLog">Siap mensimulasikan Linear Search.</div>
+  </section>
+
+  <!-- Slide 7: Binary Search -->
+  <section class="slide" data-title="Binary Search">
+    <span class="eyebrow">Cara 2</span>
+    <h2>Binary Search (Potong Setengah)</h2>
+    <div class="grid-2">
+      <div>
+        <p>Cara mencari cepat dengan mengecek nilai tengah, lalu membuang setengah data yang salah.</p>
+        <ul class="list-check space-top-10">
+          <li>Data **WAJIB sudah terurut** (misal dari A ke Z).</li>
+          <li>Analogi: mencari kata di kamus tebal.</li>
+          <li>Sangat cepat untuk data berukuran besar.</li>
+          <li><span class="tag bad">Fatal:</span> Jika data acak, Binary Search akan gagal/salah.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Prinsip Kerjanya</h3>
+        <p class="space-top-6 small-text">
+          Tentukan batas kiri dan kanan.<br/>
+          Cek elemen tengah (mid).<br/>
+          Jika target &lt; tengah → buang bagian kanan.<br/>
+          Jika target &gt; tengah → buang bagian kiri.<br/>
+          Ulangi pada bagian yang tersisa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8: Demo Binary -->
+  <section class="slide" data-title="Demo Binary">
+    <span class="eyebrow">Simulasi Kelas</span>
+    <h2>Cari kata <span class="kbd">PROGRAM</span> (Binary)</h2>
+    <p class="muted">Daftar terurut A-Z. Cek tengah, lalu singkirkan setengah area.</p>
+    <div class="chips" id="binChips"></div>
+    <div class="row">
+      <button class="btn" type="button" onclick="binStep()">Langkah berikutnya</button>
+      <button class="btn ghost" type="button" onclick="binReset()">Reset</button>
+    </div>
+    <div class="log" id="binLog">Data terurut A–Z. Siap Binary Search.</div>
+  </section>
+
+  <!-- Slide 9: Perbandingan -->
+  <section class="slide" data-title="Perbandingan">
+    <span class="eyebrow">Mana yang Lebih Bagus?</span>
+    <h2>Linear vs Binary</h2>
+    <table class="simple space-top-10">
+      <thead>
+        <tr>
+          <th>Aspek</th>
+          <th>Linear Search</th>
+          <th>Binary Search</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Apakah data harus urut?</strong></td>
+          <td>Tidak wajib (boleh acak)</td>
+          <td><strong style="color: var(--accent);">Wajib terurut</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Cara kerja</strong></td>
+          <td>Cek satu per satu dari awal</td>
+          <td>Cek tengah, potong setengah</td>
+          </tr>
+        <tr>
+          <td><strong>Mencari di data kecil</strong></td>
+          <td>Sangat praktis</td>
+          <td>Biasanya tidak perlu repot urutkan</td>
+        </tr>
+        <tr>
+          <td><strong>Mencari di data besar</strong></td>
+          <td>Lambat (bisa ribuan cek)</td>
+          <td>Sangat cepat (1000 data cuma max 10 cek)</td>
+        </tr>
+        <tr>
+          <td><strong>Analogi</strong></td>
+          <td>Mencari kunci di laci berantakan</td>
+          <td>Mencari kata di Kamus cetak A-Z</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Slide 10: Kuis 1 -->
+  <section class="slide" data-title="Kuis 1">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>1. Kapan kita boleh menggunakan Binary Search?</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f1')">Saat jumlah datanya sedikit</button>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f1')">Saat data sudah dalam keadaan terurut (A-Z atau kecil-besar)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f1')">Kapan saja bebas, tidak ada syarat khusus</button>
+    <div class="feedback" id="f1"></div>
+  </section>
+
+  <!-- Slide 11: Kuis 2 -->
+  <section class="slide" data-title="Kuis 2">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>2. Jika lembar absensi di kelas disusun acak, metode apa yang harus kamu pilih?</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f2')">Linear Search (cek dari baris atas satu per satu)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f2')">Binary Search (langsung cek baris tengah)</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f2')">Kedua metode sama-sama bisa menghasilkan jawaban benar tanpa syarat</button>
+    <div class="feedback" id="f2"></div>
+  </section>
+
+  <!-- Slide 12: Kuis 3 -->
+  <section class="slide" data-title="Kuis 3">
+    <span class="eyebrow">Kuis Formatif</span>
+    <h2>3. Apa pilar Berpikir Komputasional yang dipakai saat kita mengabaikan warna cover buku ketika mencari judul?</h2>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f3')">Dekomposisi</button>
+    <button class="quiz-option" type="button" onclick="answer(this,false,'f3')">Pengenalan Pola</button>
+    <button class="quiz-option" type="button" onclick="answer(this,true,'f3')">Abstraksi (menyaring informasi tidak relevan)</button>
+    <div class="feedback" id="f3"></div>
+  </section>
+
+  <!-- Slide 13: Kesimpulan -->
+  <section class="slide" data-title="Penutup">
+    <span class="eyebrow">Kesimpulan</span>
+    <h2>Bawa pulang pelajaran hari ini:</h2>
+    <div class="grid-3 space-top-10">
+      <div class="card">
+        <h3>Aturan Mencari</h3>
+        <p class="card-p">Target jelas, samakan huruf, arah urut, kapan stop, hitung cek.</p>
+      </div>
+      <div class="card">
+        <h3>Linear Search</h3>
+        <p class="card-p">Cek satu-satu dari depan. Bagus untuk data acak / sedikit.</p>
+      </div>
+      <div class="card">
+        <h3>Binary Search</h3>
+        <p class="card-p">Cek tengah, buang setengah. Sangat cepat tapi wajib urut.</p>
+      </div>
+    </div>
+    <p class="space-top-10 small-text">
+      Silakan buka file <span class="kbd">Lembar_Aktivitas_Minggu_2.md</span> dan kerjakan latihan tracing-nya ya!
+    </p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prevBtn" type="button" onclick="prev()">← Sebelumnya</button>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+    <div class="progress-text" id="progText">1 / 1</div>
+  </div>
+  <button id="nextBtn" type="button" onclick="next()">Berikutnya →</button>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let idx = 0;
+  function show(i) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    document.getElementById('bar').style.width = ((idx + 1) / slides.length * 100) + '%';
+    document.getElementById('progText').textContent = `${idx + 1} / ${slides.length} · ${slides[idx].dataset.title || ''}`;
+  }
+  function next() { show(idx + 1); }
+  function prev() { show(idx - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  function answer(btn, correct, fid) {
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById(fid);
+    fb.textContent = correct ? 'Benar sekali!' : 'Belum tepat. Coba diskusikan dengan guru / teman.';
+    fb.className = 'feedback ' + (correct ? 'ok' : 'no');
+  }
+
+  // Linear demo
+  const L = ['MEJA','BUKU','LAMPU','TAS','PENSIL','KOMPUTER','KURSI'];
+  const LT = 'PENSIL';
+  let li = 0, lDone = false;
+  function renderL(state={}) {
+    const row = document.getElementById('linChips');
+    row.innerHTML = '';
+    L.forEach((w,i) => {
+      const d = document.createElement('div');
+      d.className = 'chip';
+      d.textContent = w;
+      if (state.on === i) d.classList.add('on');
+      if (state.ok === i) d.classList.add('ok');
+      row.appendChild(d);
+    });
+  }
+  function linReset() {
+    li = 0; lDone = false;
+    renderL();
+    document.getElementById('linLog').textContent = 'Siap mensimulasikan Linear Search.';
+  }
+  function linStep() {
+    if (lDone) return;
+    if (li >= L.length) {
+      document.getElementById('linLog').textContent += `\nTarget "${LT}" tidak ditemukan. Perbandingan=${L.length}`;
+      lDone = true; return;
+    }
+    renderL({ on: li });
+    const log = document.getElementById('linLog');
+    if (L[li] === LT) {
+      log.textContent += `\nIndex ${li}: ${L[li]} = ${LT} → KETEMU. Perbandingan cek = ${li+1}`;
+      renderL({ ok: li }); lDone = true;
+    } else {
+      log.textContent += `\nIndex ${li}: ${L[li]} ≠ ${LT} → lanjut ke index berikutnya`;
+      li++;
+    }
+  }
+
+  // Binary demo
+  const B = ['ALGORITMA','BINARY','DATA','KOMPUTER','LOGIKA','PROGRAM','SEARCH','VARIABEL'];
+  const BT = 'PROGRAM';
+  let left=0, right=B.length-1, bDone=false;
+  function renderB(state={}) {
+    const row = document.getElementById('binChips');
+    row.innerHTML = '';
+    B.forEach((w,i) => {
+      const d = document.createElement('div');
+      d.className = 'chip';
+      d.textContent = w;
+      if (state.mid === i) d.classList.add('on');
+      if (state.ok === i) d.classList.add('ok');
+      if (state.off && (i < state.L || i > state.R)) d.classList.add('off');
+      row.appendChild(d);
+    });
+  }
+  function binReset() {
+    left = 0; right = B.length - 1; bDone = false;
+    renderB({ L: left, R: right, off: true });
+    document.getElementById('binLog').textContent = 'Data terurut A–Z. Siap Binary Search.';
+  }
+  function binStep() {
+    if (bDone) return;
+    const log = document.getElementById('binLog');
+    if (left > right) {
+      log.textContent += `\nTarget "${BT}" tidak ada di daftar.`;
+      bDone = true; return;
+    }
+    const mid = Math.floor((left + right) / 2);
+    renderB({ mid, L: left, R: right, off: true });
+    if (B[mid] === BT) {
+      log.textContent += `\nCek tengah (index ${mid}): ${B[mid]} = ${BT} → KETEMU!`;
+      renderB({ ok: mid, L: left, R: right, off: true });
+      bDone = true;
+    } else if (B[mid] < BT) {
+      log.textContent += `\nCek index ${mid} (${B[mid]} < ${BT}) → buang sebelah kiri, geser left ke ${mid+1}`;
+      left = mid + 1;
+    } else {
+      log.textContent += `\nCek index ${mid} (${B[mid]} > ${BT}) → buang sebelah kanan, geser right ke ${mid-1}`;
+      right = mid - 1;
+    }
+  }
+
+  linReset();
+  binReset();
+  show(0);
+</script>
+</body>
+</html>
