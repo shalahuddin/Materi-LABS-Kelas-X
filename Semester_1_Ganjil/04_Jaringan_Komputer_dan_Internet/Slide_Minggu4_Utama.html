@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Interaktif Informatika Kelas X - Jaringan Komputer & Cyber Security</title>
+  <!-- Google Fonts & Tailwind CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Mermaid.js for Diagrams -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .slide-enter {
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+    }
+    .slide-enter-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mermaid-box svg {
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.03);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 font-bold text-white text-lg">
+        🌐
+      </div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+          INFORMATIKA KELAS X <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold border border-indigo-500/30">Minggu 4</span>
+        </h1>
+        <p class="text-xs text-slate-400">Jaringan Komputer, Topologi, Protokol & Cyber Security</p>
+      </div>
+    </div>
+
+    <!-- Quick Slide Nav Info & Actions -->
+    <div class="flex items-center gap-4">
+      <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 font-mono">
+        <span>Slide</span>
+        <span id="currentSlideNum" class="text-indigo-400 font-bold">1</span>
+        <span>/</span>
+        <span id="totalSlideNum">8</span>
+      </div>
+
+      <button type="button" id="toggleFullscreen" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1.5 border border-slate-700" title="Toggle Fullscreen">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- PROGRESS BAR -->
+  <div class="w-full bg-slate-800 h-1">
+    <div id="progressBar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-1 transition-all duration-300" style="width: 12.5%;"></div>
+  </div>
+
+  <!-- MAIN SLIDE CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-8 flex flex-col justify-center items-center relative">
+
+    <!-- ================= SLIDE 1: JUDUL & PENGANTAR ================= -->
+    <div class="slide-item w-full" data-slide="1">
+      <div class="bg-gradient-to-b from-slate-800/80 to-slate-800/40 border border-slate-700/60 rounded-3xl p-8 sm:p-12 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-6">
+          🚀 Modul Ajar Deep Learning (Fase E)
+        </div>
+
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
+          Jaringan Komputer, <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Internet</span>, & <span class="text-emerald-400">Cyber Security</span>
+        </h2>
+
+        <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed mb-8">
+          Memahami bagaimana miliaran komputer saling terhubung, bertukar data dalam hitungan milidetik, serta bagaimana kita melindungi data berharga dari ancaman kejahatan siber di era digital.
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-700/60">
+          <div class="p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
+            <span class="text-xl mb-1 block">🌍</span>
+            <div class="font-bold text-sm text-white">LAN vs Internet</div>
+            <div class="text-xs text-slate-400">Cakupan & Fungsi</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
+            <span class="text-xl mb-1 block">🕸️</span>
+            <div class="font-bold text-sm text-white">Topologi Jaringan</div>
+            <div class="text-xs text-slate-400">Star, Bus, Ring, Mesh</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
+            <span class="text-xl mb-1 block">🛠️</span>
+            <div class="font-bold text-sm text-white">Komponen & OSI</div>
+            <div class="text-xs text-slate-400">Router, Switch, TCP/IP</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
+            <span class="text-xl mb-1 block">🛡️</span>
+            <div class="font-bold text-sm text-white">Cyber Security</div>
+            <div class="text-xs text-slate-400">Proteksi & Tata Kelola</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 2: KLASIFIKASI JARINGAN ================= -->
+    <div class="slide-item w-full hidden" data-slide="2">
+      <div class="bg-slate-800/70 border border-slate-700/60 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Klasifikasi Geografis</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Jangkauan Luas Jaringan Komputer</h2>
+          </div>
+          <span class="text-3xl">📡</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <!-- PAN -->
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition duration-200">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg mb-3">
+              PAN
+            </div>
+            <h3 class="font-bold text-white mb-1">Personal Area</h3>
+            <p class="text-xs text-slate-400 mb-3">&lt; 10 Meter (Sekitar Tubuh)</p>
+            <p class="text-xs text-slate-300 leading-relaxed">Bluetooth, TWS, Smartwatch, AirDrop ke smartphone.</p>
+          </div>
+
+          <!-- LAN -->
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-indigo-500/40 shadow-lg shadow-indigo-500/10">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-lg mb-3">
+              LAN
+            </div>
+            <h3 class="font-bold text-white mb-1">Local Area</h3>
+            <p class="text-xs text-indigo-300 font-semibold mb-3">10 m – 1 km (Satu Lab/Gedung)</p>
+            <p class="text-xs text-slate-300 leading-relaxed">Laboratorium CBT sekolah, kantor, Wi-Fi rumah. Kecepatan tinggi (1 Gbps).</p>
+          </div>
+
+          <!-- MAN -->
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition duration-200">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg mb-3">
+              MAN
+            </div>
+            <h3 class="font-bold text-white mb-1">Metropolitan</h3>
+            <p class="text-xs text-slate-400 mb-3">10 – 50 km (Satu Wilayah Kota)</p>
+            <p class="text-xs text-slate-300 leading-relaxed">Jaringan CCTV Dishub satu kota, interkoneksi cabang bank se-kota.</p>
+          </div>
+
+          <!-- WAN -->
+          <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition duration-200">
+            <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold text-lg mb-3">
+              WAN
+            </div>
+            <h3 class="font-bold text-white mb-1">Wide Area (Internet)</h3>
+            <p class="text-xs text-slate-400 mb-3">Lintas Benua & Global</p>
+            <p class="text-xs text-slate-300 leading-relaxed">Internet dunia, kabel serat optik bawah laut, satelit Starlink.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-700/80 flex items-center gap-3 text-xs text-slate-300">
+          <span class="text-xl">💡</span>
+          <span><strong>Pertanyaan Pemantik:</strong> Jika kabel internet bawah laut internasional terputus, apakah komputer di laboratorium sekolah tetap bisa saling berkirim file? <strong class="text-emerald-400">Ya, karena LAN beroperasi secara mandiri!</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 3: TOPOLOGI JARINGAN ================= -->
+    <div class="slide-item w-full hidden" data-slide="3">
+      <div class="bg-slate-800/70 border border-slate-700/60 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Arsitektur Fisik</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Topologi Jaringan Komputer</h2>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="switchTopology('star')" id="btn-star" class="px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold shadow">Star (Paling Populer)</button>
+            <button type="button" onclick="switchTopology('bus')" id="btn-bus" class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Bus</button>
+            <button type="button" onclick="switchTopology('ring')" id="btn-ring" class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Ring</button>
+            <button type="button" onclick="switchTopology('mesh')" id="btn-mesh" class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Mesh</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Content Topologi -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-6 bg-slate-900/90 p-4 rounded-2xl border border-slate-700/80 flex flex-col justify-center min-h-[260px] mermaid-box" id="topologiMermaid">
+            <pre class="mermaid text-center" id="topoCode">
+graph TD
+    Switch((Switch Pusat))
+    PC1[PC Siswa 1] --- Switch
+    PC2[PC Siswa 2] --- Switch
+    PC3[PC Siswa 3] --- Switch
+    PC4[PC Siswa 4] --- Switch
+    style Switch fill:#4f46e5,stroke:#818cf8,color:#fff
+            </pre>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3" id="topoDesc">
+            <div class="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30">
+              <h3 class="font-bold text-indigo-300 text-base mb-1" id="topoTitle">Topologi Star (Bintang)</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3" id="topoExplain">
+                Semua komputer tersambung langsung ke satu Switch pusat. Standar emas untuk Laboratorium Sekolah dan Kantor modern.
+              </p>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-emerald-500/30">
+                  <div class="text-emerald-400 font-bold mb-0.5">✅ Kelebihan:</div>
+                  <div class="text-slate-300 text-[11px]" id="topoPlus">Jika 1 kabel PC rusak, komputer lain tetap normal. Deteksi kerusakan sangat cepat.</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-rose-500/30">
+                  <div class="text-rose-400 font-bold mb-0.5">❌ Kekurangan:</div>
+                  <div class="text-slate-300 text-[11px]" id="topoMinus">Jika Switch pusat mati total, seluruh jaringan kelas langsung lumpuh.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 4: PERANGKAT KERAS JARINGAN (INTERAKTIF & VISUAL) ================= -->
+    <div class="slide-item w-full hidden" data-slide="4">
+      <div class="bg-slate-800/80 border border-slate-700/60 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Simulasi Alur Sinergi Perangkat</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Alur Perangkat Keras Jaringan (Hardware Flow)</h2>
+          </div>
+          <span class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-700/60 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Klik perangkat untuk melihat perannya
+          </span>
+        </div>
+
+        <!-- VISUAL INTERACTIVE FLOW PIPELINE -->
+        <div class="bg-slate-900/95 p-4 sm:p-5 rounded-2xl border border-slate-700/80 mb-5 overflow-x-auto">
+          <div class="flex items-center justify-between min-w-[680px] gap-2">
+
+            <!-- Node 1: ISP Internet -->
+            <button type="button" onclick="selectHardware('isp')" id="hw-btn-isp" class="hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-pink-400 transition text-center group cursor-pointer">
+              <div class="text-2xl mb-1 group-hover:scale-110 transition">🌐</div>
+              <div class="font-bold text-xs text-white">1. Internet ISP</div>
+              <div class="text-[10px] text-pink-400 font-mono">Dunia Luar</div>
+            </button>
+
+            <!-- Connector Fiber -->
+            <div class="flex flex-col items-center px-1">
+              <span class="text-[9px] font-mono text-pink-400 font-semibold">Fiber Optic</span>
+              <div class="w-8 h-0.5 bg-gradient-to-r from-pink-500 to-amber-500 relative">
+                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-amber-500 rotate-45"></div>
+              </div>
+            </div>
+
+            <!-- Node 2: Modem / ONT -->
+            <button type="button" onclick="selectHardware('modem')" id="hw-btn-modem" class="hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-amber-400 transition text-center group cursor-pointer">
+              <div class="text-2xl mb-1 group-hover:scale-110 transition">📟</div>
+              <div class="font-bold text-xs text-white">2. Modem (ONT)</div>
+              <div class="text-[10px] text-amber-400 font-mono">Konversi Sinyal</div>
+            </button>
+
+            <!-- Connector WAN -->
+            <div class="flex flex-col items-center px-1">
+              <span class="text-[9px] font-mono text-amber-400 font-semibold">Kabel WAN</span>
+              <div class="w-8 h-0.5 bg-gradient-to-r from-amber-500 to-indigo-500 relative">
+                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-indigo-500 rotate-45"></div>
+              </div>
+            </div>
+
+            <!-- Node 3: Router -->
+            <button type="button" onclick="selectHardware('router')" id="hw-btn-router" class="hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-indigo-500 hover:border-indigo-400 transition text-center group cursor-pointer shadow-lg shadow-indigo-500/20">
+              <div class="text-2xl mb-1 group-hover:scale-110 transition">🧭</div>
+              <div class="font-bold text-xs text-white">3. Router Cerdas</div>
+              <div class="text-[10px] text-indigo-400 font-mono">IP & Firewall</div>
+            </button>
+
+            <!-- Connector LAN -->
+            <div class="flex flex-col items-center px-1">
+              <span class="text-[9px] font-mono text-indigo-400 font-semibold">Kabel LAN</span>
+              <div class="w-8 h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 relative">
+                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-blue-500 rotate-45"></div>
+              </div>
+            </div>
+
+            <!-- Node 4: Switch -->
+            <button type="button" onclick="selectHardware('switch')" id="hw-btn-switch" class="hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-blue-400 transition text-center group cursor-pointer">
+              <div class="text-2xl mb-1 group-hover:scale-110 transition">🔀</div>
+              <div class="font-bold text-xs text-white">4. Switch LAN</div>
+              <div class="text-[10px] text-blue-400 font-mono">Distribusi MAC</div>
+            </button>
+
+            <!-- Connector Branch -->
+            <div class="flex flex-col items-center px-1">
+              <span class="text-[9px] font-mono text-blue-400 font-semibold">UTP / Wi-Fi</span>
+              <div class="w-8 h-0.5 bg-gradient-to-r from-blue-500 to-emerald-500 relative">
+                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-emerald-500 rotate-45"></div>
+              </div>
+            </div>
+
+            <!-- Node 5: Clients & AP -->
+            <button type="button" onclick="selectHardware('clients')" id="hw-btn-clients" class="hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-emerald-400 transition text-center group cursor-pointer">
+              <div class="text-2xl mb-1 group-hover:scale-110 transition">💻📱</div>
+              <div class="font-bold text-xs text-white">5. PC & HP Siswa</div>
+              <div class="text-[10px] text-emerald-400 font-mono">Endpoint</div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- DETAIL INSPECTOR BOX (DYNAMIC) -->
+        <div id="hwDetailBox" class="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950/60 border border-indigo-500/40 transition-all duration-300">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-700/60">
+            <div class="flex items-center gap-3">
+              <span id="hwDetailIcon" class="text-3xl p-2 rounded-xl bg-indigo-500/20 border border-indigo-500/30">🧭</span>
+              <div>
+                <h3 id="hwDetailName" class="text-base sm:text-lg font-bold text-white">3. Router Cerdas (The Network Brain)</h3>
+                <p id="hwDetailSub" class="text-xs text-indigo-300 font-mono">Perangkat Layer 3 (Network) • Menghubungkan Subnet Berbeda</p>
+              </div>
+            </div>
+            <span id="hwDetailBadge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 w-fit">
+              Fungsi Kritis: Gateway & NAT
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+              <div class="font-bold text-indigo-400 mb-1 flex items-center gap-1.5">
+                <span>🎯</span> Tugas Utama
+              </div>
+              <p id="hwDetailTask" class="text-slate-300 text-[11px] leading-relaxed">
+                Mengarahkan paket data keluar-masuk antara jaringan lokal sekolah (LAN) dengan internet global (WAN) berdasarkan Alamat IP.
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+              <div class="font-bold text-purple-400 mb-1 flex items-center gap-1.5">
+                <span>⚡</span> Layanan Otomatis
+              </div>
+              <p id="hwDetailService" class="text-slate-300 text-[11px] leading-relaxed">
+                <strong>DHCP Server:</strong> Membagikan IP otomatis ke PC/HP siswa.<br>
+                <strong>NAT:</strong> Mengubah 100+ IP lokal menjadi 1 IP publik resmi.
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                <span>🛡️</span> Keamanan & Port
+              </div>
+              <p id="hwDetailSecurity" class="text-slate-300 text-[11px] leading-relaxed">
+                Memiliki <strong>Firewall</strong> bawaan untuk memfilter situs berbahaya dan memblokir port serangan dari luar internet.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 5: MODEL PROTOKOL (OSI VS TCP/IP) ================= -->
+    <div class="slide-item w-full hidden" data-slide="5">
+      <div class="bg-slate-800/70 border border-slate-700/60 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Standarisasi Komunikasi</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Model 7 Layer OSI vs 4 Layer TCP/IP</h2>
+          </div>
+          <span class="text-xs font-mono bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded border border-indigo-500/30">Jembatan: Anak Pak Soleh Tidak Nakal Dan Pintar</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-7 gap-2 mb-4 text-center">
+          <div class="p-2.5 bg-rose-500/20 border border-rose-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-rose-400">Layer 7</div>
+            <div class="font-bold text-xs text-white">Application</div>
+            <div class="text-[10px] text-slate-400 mt-1">HTTP, DNS, WA</div>
+          </div>
+          <div class="p-2.5 bg-orange-500/20 border border-orange-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-orange-400">Layer 6</div>
+            <div class="font-bold text-xs text-white">Presentation</div>
+            <div class="text-[10px] text-slate-400 mt-1">SSL, JPG, Enkripsi</div>
+          </div>
+          <div class="p-2.5 bg-amber-500/20 border border-amber-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-amber-400">Layer 5</div>
+            <div class="font-bold text-xs text-white">Session</div>
+            <div class="text-[10px] text-slate-400 mt-1">Buka/Tutup Sesi</div>
+          </div>
+          <div class="p-2.5 bg-emerald-500/20 border border-emerald-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-emerald-400">Layer 4</div>
+            <div class="font-bold text-xs text-white">Transport</div>
+            <div class="text-[10px] text-slate-400 mt-1">TCP (Andal) / UDP</div>
+          </div>
+          <div class="p-2.5 bg-cyan-500/20 border border-cyan-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-cyan-400">Layer 3</div>
+            <div class="font-bold text-xs text-white">Network</div>
+            <div class="text-[10px] text-slate-400 mt-1">IP &amp; Router</div>
+          </div>
+          <div class="p-2.5 bg-blue-500/20 border border-blue-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-blue-400">Layer 2</div>
+            <div class="font-bold text-xs text-white">Data Link</div>
+            <div class="text-[10px] text-slate-400 mt-1">MAC &amp; Switch</div>
+          </div>
+          <div class="p-2.5 bg-purple-500/20 border border-purple-500/40 rounded-xl">
+            <div class="text-[10px] font-mono text-purple-400">Layer 1</div>
+            <div class="font-bold text-xs text-white">Physical</div>
+            <div class="text-[10px] text-slate-400 mt-1">Kabel &amp; Bit Listrik</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-700/80 text-xs text-slate-300 space-y-2">
+          <div class="flex items-center justify-between text-indigo-300 font-semibold border-b border-slate-800 pb-1.5">
+            <span>Perbandingan Praktis: TCP vs UDP</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <span class="font-bold text-emerald-400">TCP (Transmission Control Protocol):</span> Bergaransi & tidak boleh hilang (contoh: browsing web, download file, email).
+            </div>
+            <div>
+              <span class="font-bold text-pink-400">UDP (User Datagram Protocol):</span> Super cepat tanpa konfirmasi (contoh: game online, live video streaming, voice call).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 6: CYBER SECURITY & ANCAMAN ================= -->
+    <div class="slide-item w-full hidden" data-slide="6">
+      <div class="bg-slate-800/70 border border-slate-700/60 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-rose-400 tracking-wider uppercase">Keamanan Digital</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Cyber Security &amp; Ragam Ancaman</h2>
+          </div>
+          <span class="text-3xl">🛡️</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <!-- CIA Triad -->
+          <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-700">
+            <h3 class="font-bold text-indigo-400 text-sm mb-2">Prinsip CIA Triad</h3>
+            <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+              <li><strong class="text-white">Confidentiality:</strong> Kerahasiaan (hanya pemilik yang boleh baca).</li>
+              <li><strong class="text-white">Integrity:</strong> Data asli &amp; tidak diubah pihak liar.</li>
+              <li><strong class="text-white">Availability:</strong> Sistem selalu siap saat dibutuhkan.</li>
+            </ul>
+          </div>
+
+          <!-- Phishing & Ransomware -->
+          <div class="p-4 bg-slate-900/90 rounded-2xl border border-rose-500/30">
+            <h3 class="font-bold text-rose-400 text-sm mb-2">Serangan Populer</h3>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li>🎣 <strong>Phishing:</strong> Link palsu pancingan curi password / OTP.</li>
+              <li>🔒 <strong>Ransomware:</strong> File dienkripsi &amp; diperas minta tebusan uang.</li>
+              <li>📡 <strong>MitM:</strong> Menyadap data di Wi-Fi gratisan tanpa HTTPS.</li>
+            </ul>
+          </div>
+
+          <!-- Pencegahan -->
+          <div class="p-4 bg-slate-900/90 rounded-2xl border border-emerald-500/30">
+            <h3 class="font-bold text-emerald-400 text-sm mb-2">Pencegahan Utama</h3>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li>🔐 <strong>2FA / MFA:</strong> Wajibkan autentikasi 2 faktor.</li>
+              <li>🛡️ <strong>Firewall:</strong> Menyaring akses mencurigakan.</li>
+              <li>💾 <strong>Backup 3-2-1:</strong> 3 salinan di 2 media berbeda &amp; 1 di cloud.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-3 bg-rose-950/40 rounded-xl border border-rose-500/30 text-xs text-slate-300 flex items-center gap-2">
+          <span class="text-base">⚠️</span>
+          <span><strong>Peringatan Penting:</strong> Jangan pernah mengunduh software crack / game bajakan di komputer sekolah atau kantor, karena merupakan sarang utama penyebaran trojan ransomware!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 7: KUIS INTERAKTIF HOTS ================= -->
+    <div class="slide-item w-full hidden" data-slide="7">
+      <div class="bg-slate-800/70 border border-slate-700/60 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/60">
+          <div>
+            <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Evaluasi Belajar</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Kuis Interaktif HOTS</h2>
+          </div>
+          <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded-full border border-purple-500/30">Uji Pemahaman</span>
+        </div>
+
+        <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-700/80 mb-4" id="quizBox">
+          <div class="text-xs font-bold text-indigo-400 mb-1" id="quizCat">SKENARIO 1 / 2</div>
+          <h3 class="text-sm sm:text-base font-bold text-white mb-4" id="quizQuestion">
+            Di sebuah laboratorium komputer sekolah dengan 36 PC, saat kabel LAN milik PC-12 putus terinjak, PC lainnya tetap bisa online dan ujian berjalan lancar. Topologi apakah yang digunakan oleh lab tersebut?
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="quizOptions">
+            <button type="button" onclick="checkQuizAnswer(this, false, 'Topologi Bus menggunakan kabel tunggal, jika putus semua PC akan lumpuh!')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+              A. Topologi Bus
+            </button>
+            <button type="button" onclick="checkQuizAnswer(this, true, 'Tepat sekali! Topologi Star menghubungkan setiap PC ke Switch mandiri, sehingga putusnya 1 kabel tidak mengganggu PC lain.')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+              B. Topologi Star
+            </button>
+            <button type="button" onclick="checkQuizAnswer(this, false, 'Topologi Ring mengalirkan token melingkar; satu titik putus akan memutus sirkulasi token!')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+              C. Topologi Ring
+            </button>
+            <button type="button" onclick="checkQuizAnswer(this, false, 'Topologi Tree menghubungkan banyak cabang star, namun alasan utamanya adalah karakteristik Star.')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+              D. Topologi Peer-to-Peer
+            </button>
+          </div>
+
+          <div id="quizFeedback" class="hidden mt-4 p-3 rounded-xl text-xs"></div>
+        </div>
+
+        <div class="flex justify-end">
+          <button type="button" onclick="loadNextQuiz()" id="btnNextQuiz" class="hidden px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20">
+            Soal Berikutnya →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 8: KESIMPULAN & REFLEKSI ================= -->
+    <div class="slide-item w-full hidden" data-slide="8">
+      <div class="bg-gradient-to-b from-slate-800/80 to-slate-800/40 border border-slate-700/60 rounded-3xl p-8 sm:p-12 shadow-2xl backdrop-blur-xl text-center relative overflow-hidden">
+        <div class="w-16 h-16 rounded-3xl bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center text-3xl mb-4 border border-emerald-500/30">
+          🎉
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">
+          Hebat! Anda Telah Mempelajari Fondasi Jaringan
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-6">
+          Jaringan komputer menghubungkan dunia kita, dan pemahaman keamanan siber adalah kunci menjaga integritas peradaban digital di masa depan.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-3xl mx-auto mb-8">
+          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-800">
+            <div class="font-bold text-xs text-indigo-400 mb-1">💡 Refleksi Mandiri</div>
+            <p class="text-xs text-slate-300">Bagaimana jika salah satu layer OSI gagal berfungsi saat Anda melakukan video call?</p>
+          </div>
+          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-800">
+            <div class="font-bold text-xs text-purple-400 mb-1">🛠️ Praktik Selanjutnya</div>
+            <p class="text-xs text-slate-300">Merancang skema jaringan laboratorium dengan simulasi router &amp; firewall.</p>
+          </div>
+          <div class="p-4 bg-slate-900/80 rounded-2xl border border-slate-800">
+            <div class="font-bold text-xs text-emerald-400 mb-1">🛡️ Sikap Digital</div>
+            <p class="text-xs text-slate-300">Terapkan 2FA di seluruh akun pribadi dan waspada terhadap link pancingan.</p>
+          </div>
+        </div>
+
+        <button type="button" onclick="goToSlide(1)" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20 inline-flex items-center gap-2">
+          <span>Ulangi Presentasi</span> ↺
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- NAVIGATION CONTROLS (BOTTOM FLOATING) -->
+  <footer class="h-16 border-t border-slate-800 bg-slate-900/90 backdrop-blur-md px-6 flex items-center justify-between sticky bottom-0 z-50">
+    <div class="text-xs text-slate-400 hidden sm:block">
+      Gunakan tombol <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">→</kbd> keyboard untuk berpindah slide
+    </div>
+
+    <div class="flex items-center gap-3 ml-auto">
+      <button type="button" id="prevBtn" onclick="changeSlide(-1)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <span>Sebelumnya</span>
+      </button>
+
+      <button type="button" id="nextBtn" onclick="changeSlide(1)" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-indigo-500/20 disabled:opacity-40 disabled:cursor-not-allowed">
+        <span>Selanjutnya</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+
+    let currentSlide = 1;
+    const totalSlides = document.querySelectorAll('.slide-item').length;
+    document.getElementById('totalSlideNum').textContent = totalSlides;
+
+    function updateSlide() {
+      document.querySelectorAll('.slide-item').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('slide-enter-active');
+      });
+
+      const activeEl = document.querySelector(`.slide-item[data-slide="${currentSlide}"]`);
+      if (activeEl) {
+        activeEl.classList.remove('hidden');
+        activeEl.classList.add('slide-enter');
+        setTimeout(() => activeEl.classList.add('slide-enter-active'), 10);
+      }
+
+      document.getElementById('currentSlideNum').textContent = currentSlide;
+      document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+      // Re-render mermaid if current slide has mermaid
+      setTimeout(() => mermaid.contentLoaded(), 50);
+    }
+
+    function changeSlide(direction) {
+      currentSlide = Math.min(Math.max(1, currentSlide + direction), totalSlides);
+      updateSlide();
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      updateSlide();
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+
+    // Fullscreen toggle
+    document.getElementById('toggleFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    // Hardware pipeline switcher logic
+    const hardwareData = {
+      isp: {
+        icon: "🌐",
+        name: "1. Internet ISP (Internet Service Provider)",
+        sub: "Jaringan Publik Eksternal • Dunia Luar",
+        badge: "Sumber Bandwidth Global",
+        border: "border-pink-500",
+        task: "Menyediakan jalur koneksi data ke server-server di seluruh dunia (Google, YouTube, Cloud) melalui kabel serat optik bawah laut.",
+        service: "<strong>Media Transmisi:</strong> Serat Optik (Fiber Optic) dengan denyut cahaya laser kecepatan hingga puluhan Gbps.<br><strong>IP Publik:</strong> Menetapkan Alamat IP resmi ke sekolah.",
+        security: "<strong>Perhatian:</strong> Karena merupakan jaringan publik terbuka, seluruh data masuk dari ISP wajib difilter oleh Firewall Router."
+      },
+      modem: {
+        icon: "📟",
+        name: "2. Modem / ONT (Optical Network Terminal)",
+        sub: "Konverter Sinyal Fisik • Jembatan ISP ke Router",
+        badge: "Penerjemah Sinyal Cahaya",
+        border: "border-amber-500",
+        task: "Mengubah sinyal cahaya denyut laser dari kabel Fiber Optic ISP menjadi sinyal listrik digital (Ethernet) yang dapat diproses oleh Router.",
+        service: "<strong>Koneksi Masuk:</strong> Port Fiber Optic (konektor SC/APC).<br><strong>Koneksi Keluar:</strong> Port RJ-45 (Kabel WAN) menuju Router.",
+        security: "<strong>Karakteristik:</strong> Bertindak transparan (Bridge Mode) sebagai media fisik tanpa mencampuri paket data aplikasi."
+      },
+      router: {
+        icon: "🧭",
+        name: "3. Router Cerdas (The Network Brain)",
+        sub: "Perangkat Layer 3 (Network) • Menghubungkan Subnet Berbeda",
+        badge: "Fungsi Kritis: Gateway & NAT",
+        border: "border-indigo-500",
+        task: "Mengarahkan paket data keluar-masuk antara jaringan lokal sekolah (LAN) dengan internet global (WAN) berdasarkan Alamat IP.",
+        service: "<strong>DHCP Server:</strong> Membagikan IP otomatis ke PC/HP siswa.<br><strong>NAT:</strong> Mengubah 100+ IP lokal menjadi 1 IP publik resmi.",
+        security: "Memiliki <strong>Firewall</strong> bawaan untuk memfilter situs berbahaya dan memblokir port serangan dari luar internet."
+      },
+      switch: {
+        icon: "🔀",
+        name: "4. Switch LAN (Distributor Cerdas)",
+        sub: "Perangkat Layer 2 (Data Link) • Distribusi Subnet Lokal",
+        badge: "Efisien: MAC Address Table",
+        border: "border-blue-500",
+        task: "Menghubungkan puluhan PC di laboratorium CBT dalam satu jaringan lokal yang sama dengan kecepatan tinggi (1 Gbps per port).",
+        service: "<strong>MAC Table:</strong> Merekam alamat fisik tiap PC sehingga data ujian dikirim tepat sasaran tanpa membocorkan ke PC lain.<br><strong>Full-Duplex:</strong> Kirim dan terima data simultan.",
+        security: "<strong>VLAN (Virtual LAN):</strong> Mampu mengisolasi jaringan ujian siswa agar terpisah dari jaringan keuangan/tamu."
+      },
+      clients: {
+        icon: "💻📱",
+        name: "5. Endpoint & Access Point (PC & Smartphone)",
+        sub: "Perangkat Pengguna Akhir • Media Kabel UTP & Wi-Fi",
+        badge: "Terminal Pengguna",
+        border: "border-emerald-500",
+        task: "PC Siswa terhubung via kabel UTP Cat 6 untuk kestabilan ujian CBT, sedangkan smartphone/laptop terhubung ke Access Point via gelombang radio Wi-Fi.",
+        service: "<strong>Access Point:</strong> Memancarkan SSID Wi-Fi sekolah (frekuensi 2.4 GHz dan 5 GHz).<br><strong>Kabel UTP Cat 6:</strong> Kestabilan tinggi (latensi <1 ms ke server lokal).",
+        security: "<strong>Proteksi Endpoint:</strong> Dilindungi enkripsi WPA3 pada Wi-Fi, Antivirus aktif, dan autentikasi login akun siswa."
+      }
+    };
+
+    function selectHardware(type) {
+      document.querySelectorAll('.hw-node').forEach(btn => {
+        btn.className = "hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-indigo-400 transition text-center group cursor-pointer";
+      });
+
+      const selectedBtn = document.getElementById(`hw-btn-${type}`);
+      const data = hardwareData[type];
+
+      if (selectedBtn && data) {
+        selectedBtn.className = `hw-node flex-1 p-3 rounded-xl bg-slate-800 border-2 ${data.border} transition text-center group cursor-pointer shadow-lg shadow-indigo-500/20`;
+
+        document.getElementById('hwDetailIcon').textContent = data.icon;
+        document.getElementById('hwDetailName').textContent = data.name;
+        document.getElementById('hwDetailSub').textContent = data.sub;
+        document.getElementById('hwDetailBadge').textContent = data.badge;
+        document.getElementById('hwDetailTask').textContent = data.task;
+        document.getElementById('hwDetailService').innerHTML = data.service;
+        document.getElementById('hwDetailSecurity').innerHTML = data.security;
+      }
+    }
+
+    // Topologi switcher logic
+    const topologies = {
+      star: {
+        title: "Topologi Star (Bintang)",
+        code: `graph TD
+    Switch((Switch Pusat))
+    PC1[PC Siswa 1] --- Switch
+    PC2[PC Siswa 2] --- Switch
+    PC3[PC Siswa 3] --- Switch
+    PC4[PC Siswa 4] --- Switch
+    style Switch fill:#4f46e5,stroke:#818cf8,color:#fff`,
+        desc: "Semua komputer tersambung langsung ke satu Switch pusat. Standar emas untuk Laboratorium Sekolah dan Kantor modern.",
+        plus: "Jika 1 kabel PC rusak, komputer lain tetap normal. Deteksi kerusakan sangat cepat.",
+        minus: "Jika Switch pusat mati total, seluruh jaringan kelas langsung lumpuh."
+      },
+      bus: {
+        title: "Topologi Bus (Jalur Tunggal)",
+        code: `graph LR
+    Term1[Terminator] --- PC1[PC 1]
+    PC1 --- PC2[PC 2]
+    PC2 --- PC3[PC 3]
+    PC3 --- Term2[Terminator]
+    style PC1 fill:#3b82f6,stroke:#93c5fd,color:#fff`,
+        desc: "Menggunakan satu kabel utama (backbone). Komputer disambung berjejer sepanjang kabel.",
+        plus: "Hemat kabel, biaya instalasi paling murah.",
+        minus: "Rentan tabrakan data (collision). Jika kabel utama putus, seluruh jaringan mati."
+      },
+      ring: {
+        title: "Topologi Ring (Cincin Tertutup)",
+        code: `graph LR
+    PC1[PC 1] --> PC2[PC 2]
+    PC2 --> PC3[PC 3]
+    PC3 --> PC4[PC 4]
+    PC4 --> PC1
+    style PC1 fill:#ec4899,stroke:#f472b6,color:#fff`,
+        desc: "Data bergerak satu arah membentuk lingkaran cincin menggunakan sistem token.",
+        plus: "Aliran data tertib, performa stabil pada beban trafik tinggi.",
+        minus: "Jika 1 komputer atau kabel putus, sirkulasi data ke seluruh komputer terhenti."
+      },
+      mesh: {
+        title: "Topologi Mesh (Jala Penuh)",
+        code: `graph LR
+    PC1[PC 1] --- PC2[PC 2]
+    PC1 --- PC3[PC 3]
+    PC1 --- PC4[PC 4]
+    PC2 --- PC3[PC 3]
+    PC2 --- PC4[PC 4]
+    PC3 --- PC4[PC 4]
+    style PC1 fill:#10b981,stroke:#6ee7b7,color:#fff`,
+        desc: "Setiap perangkat memiliki kabel tersendiri langsung ke setiap komputer lain (Point-to-Point).",
+        plus: "Toleransi kesalahan terbaik. Jika 1 jalur putus, masih ada jalur alternatif.",
+        minus: "Sangat mahal dan rumit, membutuhkan banyak port kabel."
+      }
+    };
+
+    function switchTopology(type) {
+      ['star', 'bus', 'ring', 'mesh'].forEach(t => {
+        const btn = document.getElementById(`btn-${t}`);
+        if (t === type) {
+          btn.className = "px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold shadow";
+        } else {
+          btn.className = "px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold";
+        }
+      });
+
+      const data = topologies[type];
+      document.getElementById('topoTitle').textContent = data.title;
+      document.getElementById('topoExplain').textContent = data.desc;
+      document.getElementById('topoPlus').textContent = data.plus;
+      document.getElementById('topoMinus').textContent = data.minus;
+
+      const mermaidBox = document.getElementById('topologiMermaid');
+      mermaidBox.innerHTML = `<pre class="mermaid text-center">${data.code}</pre>`;
+      mermaid.init(undefined, mermaidBox.querySelector('.mermaid'));
+    }
+
+    // Interactive Quiz Logic
+    let currentQuizStep = 1;
+    function checkQuizAnswer(btn, isCorrect, feedbackText) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('button').forEach(b => b.disabled = true);
+
+      const fb = document.getElementById('quizFeedback');
+      fb.classList.remove('hidden');
+
+      if (isCorrect) {
+        btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-400');
+        fb.className = "mt-4 p-3 rounded-xl text-xs bg-emerald-950/60 border border-emerald-500/40 text-emerald-200";
+        fb.innerHTML = `<strong>🎉 Jawaban Benar!</strong> ${feedbackText}`;
+      } else {
+        btn.classList.add('bg-rose-600', 'text-white', 'border-rose-400');
+        fb.className = "mt-4 p-3 rounded-xl text-xs bg-rose-950/60 border border-rose-500/40 text-rose-200";
+        fb.innerHTML = `<strong>❌ Kurang Tepat:</strong> ${feedbackText}`;
+      }
+
+      document.getElementById('btnNextQuiz').classList.remove('hidden');
+    }
+
+    function loadNextQuiz() {
+      currentQuizStep = 2;
+      document.getElementById('quizCat').textContent = "SKENARIO 2 / 2";
+      document.getElementById('quizQuestion').textContent = "Seorang siswa menerima pesan WhatsApp berisi file berlabel 'Undangan_Pernikahan.apk' dari nomor tak dikenal. Tindakan paling aman dan sesuai prinsip Cyber Security adalah...";
+
+      document.getElementById('quizOptions').innerHTML = `
+        <button onclick="checkQuizAnswer(this, false, 'Menginstal APK dari sumber tidak dikenal dapat menginfeksi ponsel dengan malware penyadap OTP!')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+          A. Mengunduh dan membukanya karena penasaran
+        </button>
+        <button onclick="checkQuizAnswer(this, true, 'Tepat! APK palsu adalah modus umum serangan phishing/malware. Selalu hapus dan blokir pengirim mencurigakan.')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+          B. Tidak membuka file, langsung menghapus dan memblokir nomor tersebut
+        </button>
+        <button onclick="checkQuizAnswer(this, false, 'Meneruskan file berbahaya ke grup kelas dapat membahayakan teman lainnya!')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+          C. Meneruskan pesan ke grup kelas untuk bertanya
+        </button>
+        <button onclick="checkQuizAnswer(this, false, 'Antivirus mungkin belum tentu mengenali malware varian terbaru secara instan.')" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs text-slate-200 border border-slate-700 transition">
+          D. Menginstal aplikasi sambil menyalakan antivirus
+        </button>
+      `;
+
+      document.getElementById('quizFeedback').classList.add('hidden');
+      document.getElementById('btnNextQuiz').classList.add('hidden');
+    }
+
+    // Init first load
+    updateSlide();
+  </script>
+</body>
+</html>
